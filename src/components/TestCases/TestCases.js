@@ -3,27 +3,26 @@ import { db } from "../../firebase";
 import CasesTableHead from "./CasesTableHead";
 import TestCaseItem from "./TestCaseItem";
 
-
 function TestCases() {
-  
   const [testCases, setTestCases] = useState([]);
+  const [order, setOrder] = useState("timestamp");
 
   //checkboxes
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [isSomeChecked, setIsSomeChecked] = useState(false);
-  
 
-  function checkAllItems() {
+  function headClickHandler() {
+    setIsAllChecked(!isAllChecked)
+    setAllItemsCheck(!isAllChecked)
+  }
+
+  const setAllItemsCheck = (e) =>{
     
   }
-  function uncheckAllItems(){
-    
-  }
-  
 
   useEffect(() => {
     db.collection("testCases")
-      .orderBy("timestamp", "asc")
+      .orderBy(order, "asc")
       .onSnapshot((snapshot) =>
         setTestCases(
           snapshot.docs.map((doc) => ({
@@ -34,17 +33,14 @@ function TestCases() {
       );
   }, []);
 
- 
-
   return (
     <div className="testCases">
       <CasesTableHead
+        headClickHandler={headClickHandler}
         isAllChecked={isAllChecked}
         setIsAllChecked={setIsAllChecked}
         isSomeChecked={isSomeChecked}
         setIsSomeChecked={setIsSomeChecked}
-        checkAllItems={checkAllItems}
-        uncheckAllItems={uncheckAllItems}
       />
       {testCases.map(
         ({ id, data: { title, requirement, assignee, run, status } }) => (

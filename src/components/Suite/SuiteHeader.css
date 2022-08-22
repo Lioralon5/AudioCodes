@@ -9,5 +9,6 @@
 }
 
 .suite-header__right {
-    
+    display: flex;
+    align-items: center;
 }

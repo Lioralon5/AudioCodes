@@ -2,23 +2,10 @@ import { Checkbox } from "@mui/material";
 import "./CasesTableHead.css";
 
 function CasesTableHead({
+  headClickHandler,
   isAllChecked,
-  setIsAllChecked,
   isSomeChecked,
-  setIsSomeChecked,
-  checkAllItems,
-  uncheckAllItems,
 }) {
-  function headClickHandler() {
-    if(isAllChecked){
-      setIsAllChecked(false);
-      uncheckAllItems();
-    }
-    else{
-      setIsAllChecked(true)
-      checkAllItems();
-    }
-  }
 
   return (
     <div className="casesTableHead">

@@ -7,19 +7,19 @@ function TestCaseItem({ title, requirement, assignee, run, status, isAllChecked,
   const [isItemChecked, setIsItemChecked] = useState(false);
   
   function checkboxClickHandler() {
-    setIsItemChecked(!isItemChecked)
     if(isAllChecked){
-      
+      setIsItemChecked(false)
+      setIsAllChecked(false)
     }
     else{
-
+      setIsItemChecked(!isItemChecked)
     }
   }
 
   return (
     <div className='test-case-item'>
       <div className='test-case-item__options'>
-        <Checkbox onClick={checkboxClickHandler} checked={isItemChecked} sx={{'&.Mui-checked':{color: "#863654",},}} />
+        <Checkbox onClick={checkboxClickHandler} checked={isItemChecked || isAllChecked} sx={{'&.Mui-checked':{color: "#863654",},}} />
       </div>
       <div className='test-case-item__title'>
         {title}

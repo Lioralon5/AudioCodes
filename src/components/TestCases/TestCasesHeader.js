@@ -7,13 +7,30 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import RemoveModal from "../RemoveModal";
 import BackDrop from "../BackDrop";
+import Filter from "../Filter";
+import { db } from "../../firebase";
+import firebase from "firebase";
 
 function TestCasesHeader() {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
 
+
+  const addToSuite = (e) => {
+    e.preventDefault();
+
+    db.collection("suiteCases").add({
+      title: 'input',
+      requirement: "Who cares",
+      assignee: "Lior Alon",
+      run: "No Run",
+      status: "Passed",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  };
+
   function deleteHandler() {
     setRemoveModalIsOpen(false);
-
+    removeTestCase();
   }
 
   function removeHandler() {
@@ -21,8 +38,17 @@ function TestCasesHeader() {
   }
 
   function closeRemoveModalHandler() {
-    setRemoveModalIsOpen(false)
+    setRemoveModalIsOpen(false);
   }
+
+  const removeTestCase = (e) => {
+    const docRef = db.collection("testCases").where('title', '==', '');
+    docRef.get().then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        doc.ref.delete()
+      })
+    })
+  };
 
   return (
     <div className="test-cases-header">
@@ -31,6 +57,7 @@ function TestCasesHeader() {
       </div>
 
       <div className="test-cases-header__right">
+        <Filter />
         <Tooltip title="Filter" placement="bottom">
           <IconButton>
             <FilterListOutlinedIcon sx={{ color: "#863654" }} />
@@ -44,7 +71,7 @@ function TestCasesHeader() {
           </Link>
         </Tooltip>
         <Tooltip title="Add to Suite" placement="bottom">
-          <IconButton>
+          <IconButton onClick={addToSuite}>
             <AddOutlinedIcon sx={{ color: "#863654" }} />
           </IconButton>
         </Tooltip>
@@ -54,9 +81,13 @@ function TestCasesHeader() {
           </IconButton>
         </Tooltip>
       </div>
-      {removeModalIsOpen && <RemoveModal onCancel={closeRemoveModalHandler} onDelete={deleteHandler} />}
+      {removeModalIsOpen && (
+        <RemoveModal
+          onCancel={closeRemoveModalHandler}
+          onDelete={deleteHandler}
+        />
+      )}
       {removeModalIsOpen && <BackDrop onClick={closeRemoveModalHandler} />}
-      
     </div>
   );
 }
