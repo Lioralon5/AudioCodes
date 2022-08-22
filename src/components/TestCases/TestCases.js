@@ -41,6 +41,7 @@ function TestCases() {
         setIsAllChecked={setIsAllChecked}
         isSomeChecked={isSomeChecked}
         setIsSomeChecked={setIsSomeChecked}
+        setTestCases={setTestCases}
       />
       {testCases.map(
         ({ id, data: { title, requirement, assignee, run, status } }) => (
