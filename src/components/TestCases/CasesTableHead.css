@@ -1,0 +1,27 @@
+.casesTableHead {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: #DBEAF4;
+}
+.casesTableHead__title {
+    display: flex;
+    flex: 0.9;
+    cursor: pointer;
+}
+.casesTableHead__requirement {
+    display: flex;
+    flex: 0.3;
+}
+.casesTableHead__assignee {
+    display: flex;
+    flex: 0.3;
+}
+.casesTableHead__run {
+    display: flex;
+    flex: 0.2;
+}
+.casesTableHead__status {
+    display: flex;
+    flex: 0.2;
+}

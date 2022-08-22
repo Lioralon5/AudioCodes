@@ -1,0 +1,34 @@
+import { Checkbox } from "@mui/material";
+import "./CasesTableHead.css";
+
+function CasesTableHead({isClicked, isAllChecked}) {
+
+  return (
+    <div className="casesTableHead">
+      <div className="casesTableHead__options">
+        <Checkbox
+          onClick={() => isClicked(isAllChecked)}
+          checked={isAllChecked}
+          sx={{ "&.Mui-checked": { color: "#863654" } }}
+        />
+      </div>
+      <div className="casesTableHead__title">
+        <b>Title</b>
+      </div>
+      <div className="casesTableHead__requirement">
+        <b>Requirement</b>
+      </div>
+      <div className="casesTableHead__assignee">
+        <b>Assignee</b>
+      </div>
+      <div className="casesTableHead__run">
+        <b>Run</b>
+      </div>
+      <div className="casesTableHead__status">
+        <b>Status</b>
+      </div>
+    </div>
+  );
+}
+
+export default CasesTableHead;

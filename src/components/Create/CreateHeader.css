@@ -1,0 +1,13 @@
+.createHeader {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    
+}
+.createHeader__left {
+    flex: 0.9;
+}
+
+.createHeader__right {
+    
+}

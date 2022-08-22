@@ -1,0 +1,25 @@
+.test-case-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+.test-case-item__title {
+    display: flex;
+    flex: 0.9;
+}
+.test-case-item__requirement {
+    display: flex;
+    flex: 0.3;
+}
+.test-case-item__assignee {
+    display: flex;
+    flex: 0.3;
+}
+.test-case-item__run {
+    display: flex;
+    flex: 0.2;
+}
+.test-case-item__status {
+    display: flex;
+    flex: 0.2;
+}
