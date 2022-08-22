@@ -2,18 +2,24 @@ import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import CasesTableHead from "./CasesTableHead";
 import TestCaseItem from "./TestCaseItem";
-import firebase from "firebase";
+
 
 function TestCases() {
-  const [input, setInput] = useState("");
+  
   const [testCases, setTestCases] = useState([]);
 
+  //checkboxes
   const [isAllChecked, setIsAllChecked] = useState(false);
+  const [isSomeChecked, setIsSomeChecked] = useState(false);
   
 
-  const isClicked = (isAllChecked) => {
-    setIsAllChecked(!isAllChecked);
-  };
+  function checkAllItems() {
+    
+  }
+  function uncheckAllItems(){
+    
+  }
+  
 
   useEffect(() => {
     db.collection("testCases")
@@ -28,37 +34,25 @@ function TestCases() {
       );
   }, []);
 
-  const createTestCase = (e) => {
-    e.preventDefault();
-
-    db.collection("testCases").add({
-      title: input,
-      requirement: "Who cares",
-      assignee: "Lior Alon",
-      run: "No Run",
-      status: "Passed",
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    setInput("");
-  };
+ 
 
   return (
     <div className="testCases">
-      <CasesTableHead isClicked={isClicked} isAllChecked={isAllChecked} />
-      <form>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          type="text"
-        />
-        <button onClick={createTestCase} type="submit">
-          Create
-        </button>
-      </form>
+      <CasesTableHead
+        isAllChecked={isAllChecked}
+        setIsAllChecked={setIsAllChecked}
+        isSomeChecked={isSomeChecked}
+        setIsSomeChecked={setIsSomeChecked}
+        checkAllItems={checkAllItems}
+        uncheckAllItems={uncheckAllItems}
+      />
       {testCases.map(
-        ({ id, data: { title, requirement, assignee, run, status} }) => (
+        ({ id, data: { title, requirement, assignee, run, status } }) => (
           <TestCaseItem
             isAllChecked={isAllChecked}
+            setIsAllChecked={setIsAllChecked}
+            isSomeChecked={isSomeChecked}
+            setIsSomeChecked={setIsSomeChecked}
             key={id}
             title={title}
             requirement={requirement}

@@ -1,14 +1,32 @@
 import { Checkbox } from "@mui/material";
 import "./CasesTableHead.css";
 
-function CasesTableHead({isClicked, isAllChecked}) {
+function CasesTableHead({
+  isAllChecked,
+  setIsAllChecked,
+  isSomeChecked,
+  setIsSomeChecked,
+  checkAllItems,
+  uncheckAllItems,
+}) {
+  function headClickHandler() {
+    if(isAllChecked){
+      setIsAllChecked(false);
+      uncheckAllItems();
+    }
+    else{
+      setIsAllChecked(true)
+      checkAllItems();
+    }
+  }
 
   return (
     <div className="casesTableHead">
       <div className="casesTableHead__options">
         <Checkbox
-          onClick={() => isClicked(isAllChecked)}
+          onClick={headClickHandler}
           checked={isAllChecked}
+          indeterminate={isSomeChecked}
           sx={{ "&.Mui-checked": { color: "#863654" } }}
         />
       </div>

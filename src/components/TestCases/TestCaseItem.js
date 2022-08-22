@@ -2,13 +2,24 @@ import { Checkbox } from '@mui/material'
 import { useState } from 'react'
 import './TestCaseItem.css'
 
-function TestCaseItem({ title, requirement, assignee, run, status, isAllChecked}) {
-  const [isChecked, setIsChecked] = useState(false);
+function TestCaseItem({ title, requirement, assignee, run, status, isAllChecked, setIsAllChecked, isSomeChecked, setIsSomeChecked}) {
+
+  const [isItemChecked, setIsItemChecked] = useState(false);
+  
+  function checkboxClickHandler() {
+    setIsItemChecked(!isItemChecked)
+    if(isAllChecked){
+      
+    }
+    else{
+
+    }
+  }
 
   return (
     <div className='test-case-item'>
       <div className='test-case-item__options'>
-        <Checkbox onClick={() => setIsChecked(!isChecked)} checked={isAllChecked || isChecked} sx={{'&.Mui-checked':{color: "#863654",},}} />
+        <Checkbox onClick={checkboxClickHandler} checked={isItemChecked} sx={{'&.Mui-checked':{color: "#863654",},}} />
       </div>
       <div className='test-case-item__title'>
         {title}
