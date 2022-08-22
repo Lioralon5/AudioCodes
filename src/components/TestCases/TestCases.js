@@ -7,10 +7,8 @@ function TestCases({ isSomeoneChecked }) {
   const [testCases, setTestCases] = useState([]);
   const [order, setOrder] = useState("timestamp");
 
-  //checkboxes
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [isSomeChecked, setIsSomeChecked] = useState(false);
-  const [checked, setChecked] = useState(false);
 
   const headClickHandler = () => {
     setIsAllChecked(!isAllChecked);
@@ -31,6 +29,13 @@ function TestCases({ isSomeoneChecked }) {
       }})
     );
   };
+  
+  useEffect(() =>{
+    let checkedCasesAmount = testCases.filter(e => e.isChecked).length;
+    let casesAmount = testCases.length;
+    setIsSomeChecked(checkedCasesAmount != 0 && checkedCasesAmount < casesAmount)
+    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount != 0)
+  }, testCases)
 
   useEffect(() => {
     db.collection("testCases")
@@ -53,9 +58,7 @@ function TestCases({ isSomeoneChecked }) {
       <CasesTableHead
         headClickHandler={headClickHandler}
         isAllChecked={isAllChecked}
-        setIsAllChecked={setIsAllChecked}
         isSomeChecked={isSomeChecked}
-        setIsSomeChecked={setIsSomeChecked}
         setTestCases={setTestCases}
       />
       {testCases.map(
@@ -66,10 +69,6 @@ function TestCases({ isSomeoneChecked }) {
         }) => (
           <TestCaseItem
             id={id}
-            isAllChecked={isAllChecked}
-            setIsAllChecked={setIsAllChecked}
-            isSomeChecked={isSomeChecked}
-            setIsSomeChecked={setIsSomeChecked}
             key={id}
             title={title}
             requirement={requirement}

@@ -1,5 +1,4 @@
 import { Checkbox } from '@mui/material'
-import { useState } from 'react'
 import './TestCaseItem.css'
 
 function TestCaseItem({ id, title, requirement, assignee, run, status, isChecked, onChecked}) {
