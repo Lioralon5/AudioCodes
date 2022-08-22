@@ -11,7 +11,7 @@ import Filter from "../Filter";
 import { db } from "../../firebase";
 import firebase from "firebase";
 
-function TestCasesHeader() {
+function TestCasesHeader({isAnyChecked}) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
 
 
@@ -63,23 +63,23 @@ function TestCasesHeader() {
             <FilterListOutlinedIcon sx={{ color: "#863654" }} />
           </IconButton>
         </Tooltip>
-        <Tooltip title="New" placement="bottom">
+        {!isAnyChecked && <Tooltip title="New" placement="bottom">
           <Link to="/create">
             <IconButton>
               <AddOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
           </Link>
-        </Tooltip>
-        <Tooltip title="Add to Suite" placement="bottom">
+        </Tooltip>}
+        {isAnyChecked && <Tooltip title="Add to Suite" placement="bottom">
           <IconButton onClick={addToSuite}>
             <AddOutlinedIcon sx={{ color: "#863654" }} />
           </IconButton>
-        </Tooltip>
-        <Tooltip title="Remove" placement="bottom">
+        </Tooltip>}
+        {isAnyChecked && <Tooltip title="Remove" placement="bottom">
           <IconButton onClick={removeHandler}>
             <ClearOutlinedIcon sx={{ color: "#863654" }} />
           </IconButton>
-        </Tooltip>
+        </Tooltip>}
       </div>
       {removeModalIsOpen && (
         <RemoveModal

@@ -3,32 +3,47 @@ import { db } from "../../firebase";
 import CasesTableHead from "./CasesTableHead";
 import TestCaseItem from "./TestCaseItem";
 
-function TestCases() {
+function TestCases({ isSomeoneChecked }) {
   const [testCases, setTestCases] = useState([]);
   const [order, setOrder] = useState("timestamp");
 
   //checkboxes
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [isSomeChecked, setIsSomeChecked] = useState(false);
+  const [checked, setChecked] = useState(false);
 
-  function headClickHandler() {
-    setIsAllChecked(!isAllChecked)
-    setAllItemsCheck(!isAllChecked)
-  }
+  const headClickHandler = () => {
+    setIsAllChecked(!isAllChecked);
+    setAllItemsCheck(!isAllChecked);
+  };
 
-  const setAllItemsCheck = (e) =>{
-    
-  }
+  const setAllItemsCheck = (e) => {
+    setTestCases(testCases.map((t) => ({ ...t, isChecked: e })));
+  };
+
+  const onChecked = (id) => {
+    setTestCases(testCases.map(e => {
+      if(e.id === id){
+        return {...e, isChecked: !e.isChecked};
+      }
+      else {
+        return e;
+      }})
+    );
+  };
 
   useEffect(() => {
     db.collection("testCases")
       .orderBy(order, "asc")
       .onSnapshot((snapshot) =>
         setTestCases(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
+          snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              data: doc.data(),
+              isChecked: false,
+            };
+          })
         )
       );
   }, []);
@@ -44,8 +59,13 @@ function TestCases() {
         setTestCases={setTestCases}
       />
       {testCases.map(
-        ({ id, data: { title, requirement, assignee, run, status } }) => (
+        ({
+          id,
+          data: { title, requirement, assignee, run, status },
+          isChecked,
+        }) => (
           <TestCaseItem
+            id={id}
             isAllChecked={isAllChecked}
             setIsAllChecked={setIsAllChecked}
             isSomeChecked={isSomeChecked}
@@ -56,6 +76,8 @@ function TestCases() {
             assignee={assignee}
             run={run}
             status={status}
+            isChecked={isChecked}
+            onChecked={onChecked}
           />
         )
       )}
