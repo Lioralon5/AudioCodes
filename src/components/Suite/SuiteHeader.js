@@ -8,8 +8,9 @@ import { db } from "../../firebase";
 import RemoveModal from "../RemoveModal";
 import BackDrop from "../BackDrop";
 
-function SuiteHeader({suiteCases}) {
+function SuiteHeader({suiteCases, setSuiteCases}) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
+  
   function deleteHandler() {
     setRemoveModalIsOpen(false);
     removeSelectedSuiteCases();
@@ -42,7 +43,7 @@ function SuiteHeader({suiteCases}) {
       </div>
 
       <div className="suite-header__right">
-        <Filter />
+        <Filter isSuite={true} suiteCases={suiteCases} setSuiteCases={setSuiteCases} />
         <Tooltip title="Filter" placement="bottom">
           <IconButton>
             <FilterListOutlinedIcon sx={{ color: "#863654" }} />

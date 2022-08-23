@@ -6,19 +6,21 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { db } from "../../firebase";
 import firebase from "firebase";
 
-function CreateHeader({ input, setInput }) {
+function CreateHeader(props) {
   const createTestCase = (e) => {
-    e.preventDefault();
-
-    db.collection("testCases").add({
-      title: input,
-      requirement: "Who cares",
-      assignee: "Lior Alon",
-      run: "No Run",
-      status: "Passed",
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    setInput("");
+    if (props.title === "") {
+      window.alert("enter title!");
+    } else {
+      db.collection("testCases").add({
+        title: props.title,
+        requirement: props.requirement,
+        assignee: props.assignee,
+        run: props.run,
+        status: props.status,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+    props.setTitle("");
   };
 
   return (

@@ -9,7 +9,7 @@ function Suite() {
 
   return (
     <div className="suite">
-      <SuiteHeader suiteCases={suiteCases} />
+      <SuiteHeader suiteCases={suiteCases} setSuiteCases={setSuiteCases} />
       <SuiteCases suiteCases={suiteCases} setSuiteCases={setSuiteCases} />
     </div>
   )

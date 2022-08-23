@@ -17,6 +17,7 @@ function SuiteCases({ suiteCases, setSuiteCases }) {
 
   const setAllItemsCheck = (e) => {
     setSuiteCases(suiteCases.map((t) => ({ ...t, isChecked: e })));
+    console.log(suiteCases)
   };
 
   const onChecked = (id) => {
@@ -44,10 +45,13 @@ function SuiteCases({ suiteCases, setSuiteCases }) {
       .orderBy(order, "asc")
       .onSnapshot((snapshot) =>
         setSuiteCases(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
+          snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              data: doc.data(),
+              isChecked: false,
+            };
+          })
         )
       );
   }, []);

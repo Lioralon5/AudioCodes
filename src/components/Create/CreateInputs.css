@@ -1,8 +1,11 @@
-.input__name {
-    margin-top: 5%;
+.input__title {
+    margin-top: 2%;
     
 }
 
-.input__description {
-    margin-top: 5%;
+
+.input__select {
+    margin-top: 2%;
+    display: flex;
+    justify-content: space-evenly;
 }

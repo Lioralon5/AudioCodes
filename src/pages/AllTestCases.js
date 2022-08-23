@@ -6,11 +6,12 @@ import './AllTestCases.css'
 
 function AllTestCases() {
   const [testCases, setTestCases] = useState([]);
+  const [isSomeChecked, setIsSomeChecked] = useState(false);
 
   return (
     <div className="allTestCases">
-      <TestCasesHeader testCases={testCases} />
-      <TestCases testCases={testCases} setTestCases={setTestCases} />
+      <TestCasesHeader testCases={testCases} setTestCases={setTestCases} isSomeChecked={isSomeChecked} />
+      <TestCases testCases={testCases} setTestCases={setTestCases} isSomeChecked={isSomeChecked} setIsSomeChecked={setIsSomeChecked} />
     </div>
 
   )

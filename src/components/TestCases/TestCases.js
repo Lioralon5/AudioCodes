@@ -3,14 +3,16 @@ import { db } from "../../firebase";
 import CasesTableHead from "./CasesTableHead";
 import TestCaseItem from "./TestCaseItem";
 
-function TestCases({testCases, setTestCases}) {
-  
+function TestCases({
+  testCases,
+  setTestCases,
+  isSomeChecked,
+  setIsSomeChecked,
+}) {
   const [order, setOrder] = useState("timestamp");
 
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const [isSomeChecked, setIsSomeChecked] = useState(false);
 
-  
 
   const headClickHandler = () => {
     setIsAllChecked(!isAllChecked);
@@ -22,22 +24,25 @@ function TestCases({testCases, setTestCases}) {
   };
 
   const onChecked = (id) => {
-    setTestCases(testCases.map(e => {
-      if(e.id === id){
-        return {...e, isChecked: !e.isChecked};
-      }
-      else {
-        return e;
-      }})
+    setTestCases(
+      testCases.map((e) => {
+        if (e.id === id) {
+          return { ...e, isChecked: !e.isChecked };
+        } else {
+          return e;
+        }
+      })
     );
   };
-  
-  useEffect(() =>{
-    let checkedCasesAmount = testCases.filter(e => e.isChecked).length;
+
+  useEffect(() => {
+    let checkedCasesAmount = testCases.filter((e) => e.isChecked).length;
     let casesAmount = testCases.length;
-    setIsSomeChecked(checkedCasesAmount !== 0 && checkedCasesAmount < casesAmount)
-    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount !== 0)
-  }, [testCases])
+    setIsSomeChecked(
+      checkedCasesAmount !== 0 && checkedCasesAmount < casesAmount
+    );
+    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount !== 0);
+  }, [testCases]);
 
   useEffect(() => {
     db.collection("testCases")
