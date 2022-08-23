@@ -2,7 +2,7 @@ import "./TestCasesHeader.css";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import FilterListOffOutlinedIcon from '@mui/icons-material/FilterListOffOutlined';
+import FilterListOffOutlinedIcon from "@mui/icons-material/FilterListOffOutlined";
 import { IconButton, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -15,6 +15,7 @@ import firebase from "firebase";
 function TestCasesHeader({ testCases, setTestCases, isSomeChecked }) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
   const [isFilterActive, setIsFilterActive] = useState(false);
+  const [origin, setOrigin] = useState([]);
 
   const addSelectedToSuite = (e) => {
     testCases
@@ -34,8 +35,8 @@ function TestCasesHeader({ testCases, setTestCases, isSomeChecked }) {
 
   const cancelFilterHandler = () => {
     setIsFilterActive(!isFilterActive);
-    //setTestCases(origin);
-  }
+    if (origin.length !== 0) setTestCases(origin);
+  };
 
   function deleteHandler() {
     setRemoveModalIsOpen(false);
@@ -93,6 +94,9 @@ function TestCasesHeader({ testCases, setTestCases, isSomeChecked }) {
             isSuite={false}
             testCases={testCases}
             setTestCases={setTestCases}
+            origin={origin}
+            setOrigin={setOrigin}
+            setIsFilterActive={setIsFilterActive}
           />
         )}
         {!isFilterActive && (

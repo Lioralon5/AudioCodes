@@ -7,11 +7,14 @@ function Filter({
   setTestCases,
   suiteCases,
   setSuiteCases,
+  origin,
+  setOrigin,
+  setIsFilterActive,
 }) {
-  const [origin, setOrigin] = useState([]);
-  const [filteredCases, setFilteredCases] = useState([]);
+
   //Filter by requirement
   const filterByRequirement = (e) => {
+    setIsFilterActive(false);
     if (isSuite) {
       filterSuiteByRequirement();
     } else {
@@ -34,6 +37,7 @@ function Filter({
 
   //Filter by Assignee
   const filterByAssignee = (e) => {
+    setIsFilterActive(false);
     if (isSuite) {
       filterSuiteByAssignee();
     } else {
@@ -43,7 +47,6 @@ function Filter({
           (testCase) => testCase.data.assignee === e.target.textContent
         )
       );
-      setFilteredCases(testCases);
     }
   };
   const filterSuiteByAssignee = (e) => {
@@ -56,6 +59,7 @@ function Filter({
   };
   //Filter by Run
   const filterByRun = (e) => {
+    setIsFilterActive(false);
     if (isSuite) {
       filterSuiteByRun();
     } else {
@@ -77,6 +81,7 @@ function Filter({
   };
   //Filter by Status
   const filterByStatus = (e) => {
+    setIsFilterActive(false);
     if (isSuite) {
       filterSuiteByStatus();
     } else {
@@ -137,11 +142,6 @@ function Filter({
     });
   }
 
-  const dummy = () => {
-    console.log(testCases);
-    console.log(suiteCases);
-  };
-
   return (
     <div>
       {!filter.requirement &&
@@ -162,8 +162,12 @@ function Filter({
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Requirement</InputLabel>
           <Select defaultOpen label="Requirement">
-            <MenuItem onClick={filterByRequirement}>ST functional</MenuItem>
-            <MenuItem onClick={filterByRequirement}>MI functional</MenuItem>
+            <MenuItem value={0} onClick={filterByRequirement}>
+              ST functional
+            </MenuItem>
+            <MenuItem value={1} onClick={filterByRequirement}>
+              MI functional
+            </MenuItem>
           </Select>
         </FormControl>
       )}
@@ -171,8 +175,12 @@ function Filter({
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Assignee</InputLabel>
           <Select defaultOpen label="Assignee">
-            <MenuItem onClick={filterByAssignee}>Lior Alon</MenuItem>
-            <MenuItem onClick={filterByAssignee}>Goku</MenuItem>
+            <MenuItem value={0} onClick={filterByAssignee}>
+              Lior Alon
+            </MenuItem>
+            <MenuItem value={1} onClick={filterByAssignee}>
+              Goku
+            </MenuItem>
           </Select>
         </FormControl>
       )}
@@ -180,9 +188,15 @@ function Filter({
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Run</InputLabel>
           <Select defaultOpen label="Run">
-            <MenuItem onClick={filterByRun}>No Run</MenuItem>
-            <MenuItem onClick={filterByRun}>Passed</MenuItem>
-            <MenuItem onClick={filterByRun}>Failed</MenuItem>
+            <MenuItem value={0} onClick={filterByRun}>
+              No Run
+            </MenuItem>
+            <MenuItem value={1} onClick={filterByRun}>
+              Passed
+            </MenuItem>
+            <MenuItem value={2} onClick={filterByRun}>
+              Failed
+            </MenuItem>
           </Select>
         </FormControl>
       )}
@@ -190,9 +204,15 @@ function Filter({
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Status</InputLabel>
           <Select defaultOpen label="Status">
-            <MenuItem onClick={filterByStatus}>Done</MenuItem>
-            <MenuItem onClick={filterByStatus}>Open</MenuItem>
-            <MenuItem onClick={filterByStatus}>WIP</MenuItem>
+            <MenuItem value={0} onClick={filterByStatus}>
+              Done
+            </MenuItem>
+            <MenuItem value={1} onClick={filterByStatus}>
+              Open
+            </MenuItem>
+            <MenuItem value={2} onClick={filterByStatus}>
+              WIP
+            </MenuItem>
           </Select>
         </FormControl>
       )}

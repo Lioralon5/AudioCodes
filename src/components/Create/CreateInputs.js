@@ -43,7 +43,7 @@ function CreateInputs(props) {
             <Select
               value={props.requirement}
               onChange={requirementHandler}
-              label="Age"
+              label="Requirement"
             >
               <MenuItem value={"ST functional"}>ST functional</MenuItem>
               <MenuItem value={"MI functional"}>MI functional</MenuItem>
