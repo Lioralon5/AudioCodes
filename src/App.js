@@ -4,11 +4,13 @@ import AllTestCases from "./pages/AllTestCases";
 import CreateNewTestCase from "./pages/CreateNewTestCase";
 import Suite from "./pages/Suite";
 import "./App.css";
+import Login from "./pages/Login";
 
 function App() {
   return (
     <div className="app">
-      <Sidebar />
+      <Login />
+      {/* <Sidebar />
       <Route path="/" exact>
         <AllTestCases />
       </Route>
@@ -17,7 +19,7 @@ function App() {
       </Route>
       <Route path="/create">
         <CreateNewTestCase />
-      </Route>
+      </Route> */}
     </div>
   );
 }
