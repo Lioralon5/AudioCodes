@@ -15,9 +15,20 @@
     display: flex;
     flex: 0.3;
 }
-.test-case-item__run {
+.test-case-item__run-no {
     display: flex;
     flex: 0.2;
+    color: gray;
+}
+.test-case-item__run-green{
+    display: flex;
+    flex: 0.2;
+    color: lightgreen;
+}
+.test-case-item__run-red{
+    display: flex;
+    flex: 0.2;
+    color: red;
 }
 .test-case-item__status {
     display: flex;

@@ -15,9 +15,20 @@
     display: flex;
     flex: 0.3;
 }
-.suite-case-item__run {
+.suite-case-item__run-no {
     display: flex;
     flex: 0.2;
+    color: gray;
+}
+.suite-case-item__run-green{
+    display: flex;
+    flex: 0.2;
+    color: lightgreen;
+}
+.suite-case-item__run-red{
+    display: flex;
+    flex: 0.2;
+    color: red;
 }
 .suite-case-item__status {
     display: flex;

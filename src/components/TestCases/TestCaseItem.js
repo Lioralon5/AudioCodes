@@ -18,7 +18,7 @@ function TestCaseItem({ id, title, requirement, assignee, run, status, isChecked
       <div className='test-case-item__assignee'>
         {assignee}
       </div>
-      <div className='test-case-item__run'>
+      <div className={run === 'Passed' ? 'test-case-item__run-green' : run === 'Failed' ? 'test-case-item__run-red' : 'test-case-item__run-no'}>
         {run}
       </div>
       <div className='test-case-item__status'>

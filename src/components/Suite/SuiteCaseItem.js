@@ -18,7 +18,7 @@ function SuiteCaseItem({ id, title, requirement, assignee, run, status, isChecke
       <div className='suite-case-item__assignee'>
         {assignee}
       </div>
-      <div className='suite-case-item__run'>
+      <div className={run === 'Passed' ? 'suite-case-item__run-green' : run === 'Failed' ? 'suite-case-item__run-red' : 'suite-case-item__run-no'}>
         {run}
       </div>
       <div className='suite-case-item__status'>
