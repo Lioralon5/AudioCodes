@@ -9,11 +9,12 @@ function AllTestCases() {
   const isSomeoneChecked = e => {
     setIsAnyChecked(e);
   }
+ 
 
   return (
     <div className="allTestCases">
       <TestCasesHeader isAnyChecked={isAnyChecked} />
-      <TestCases isSomeoneChecked={isSomeoneChecked} />
+      <TestCases />
     </div>
 
   )
