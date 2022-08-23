@@ -1,15 +1,47 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import TestCaseItem from "../TestCases/TestCaseItem";
+import SuiteCaseItem from "./SuiteCaseItem";
 import SuiteTableHead from "./SuiteTableHead";
 
-function SuiteCases() {
-  
-  const [suiteCases, setSuiteCases] = useState([]);
+function SuiteCases({ suiteCases, setSuiteCases }) {
+
+  const [order, setOrder] = useState("timestamp");
+
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [isSomeChecked, setIsSomeChecked] = useState(false);
+
+  const headClickHandler = () => {
+    setIsAllChecked(!isAllChecked);
+    setAllItemsCheck(!isAllChecked);
+  };
+
+  const setAllItemsCheck = (e) => {
+    setSuiteCases(suiteCases.map((t) => ({ ...t, isChecked: e })));
+  };
+
+  const onChecked = (id) => {
+    setSuiteCases(suiteCases.map(e => {
+      if(e.id === id){
+        return {...e, isChecked: !e.isChecked};
+      }
+      else {
+        return e;
+      }})
+    );
+  };
+
+  useEffect(() => {
+    let checkedCasesAmount = suiteCases.filter((e) => e.isChecked).length;
+    let casesAmount = suiteCases.length;
+    setIsSomeChecked(
+      checkedCasesAmount !== 0 && checkedCasesAmount < casesAmount
+    );
+    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount !== 0);
+  }, [suiteCases]);
 
   useEffect(() => {
     db.collection("suiteCases")
-      .orderBy("timestamp", "asc")
+      .orderBy(order, "asc")
       .onSnapshot((snapshot) =>
         setSuiteCases(
           snapshot.docs.map((doc) => ({
@@ -22,16 +54,28 @@ function SuiteCases() {
 
   return (
     <div className="suiteCases">
-      <SuiteTableHead />
+      <SuiteTableHead
+        headClickHandler={headClickHandler}
+        isAllChecked={isAllChecked}
+        isSomeChecked={isSomeChecked}
+        setSuiteCases={setSuiteCases}
+      />
       {suiteCases.map(
-        ({ id, data: { title, requirement, assignee, run, status } }) => (
-          <TestCaseItem
+        ({
+          id,
+          data: { title, requirement, assignee, run, status },
+          isChecked,
+        }) => (
+          <SuiteCaseItem
+            id={id}
             key={id}
             title={title}
             requirement={requirement}
             assignee={assignee}
             run={run}
             status={status}
+            isChecked={isChecked}
+            onChecked={onChecked}
           />
         )
       )}

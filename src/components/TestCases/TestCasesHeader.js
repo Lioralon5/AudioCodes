@@ -11,26 +11,28 @@ import Filter from "../Filter";
 import { db } from "../../firebase";
 import firebase from "firebase";
 
-function TestCasesHeader({isAnyChecked}) {
+function TestCasesHeader({ testCases }) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
 
-
-  const addToSuite = (e) => {
-    e.preventDefault();
-
-    db.collection("suiteCases").add({
-      title: 'input',
-      requirement: "Who cares",
-      assignee: "Lior Alon",
-      run: "No Run",
-      status: "Passed",
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  const addSelectedToSuite = (e) => {
+    testCases.filter((testCase) => testCase.isChecked).map((testCase) => {
+      db.collection("suiteCases").add({
+        title: testCase.data.title,
+        requirement: testCase.data.requirement,
+        assignee: testCase.data.assignee,
+        run: testCase.data.run,
+        status: testCase.data.status,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      return testCase;
     });
   };
 
+  
+
   function deleteHandler() {
     setRemoveModalIsOpen(false);
-    removeTestCase();
+    removeSelectedTestCases();
   }
 
   function removeHandler() {
@@ -41,14 +43,40 @@ function TestCasesHeader({isAnyChecked}) {
     setRemoveModalIsOpen(false);
   }
 
-  const removeTestCase = (e) => {
-    const docRef = db.collection("testCases").where('title', '==', '');
-    docRef.get().then(function(querySnapshot){
-      querySnapshot.forEach(function(doc){
-        doc.ref.delete()
-      })
+  const removeSelectedTestCases = () => {
+    testCases.filter((testCase) => testCase.isChecked).map(testCase => {
+        const docRef = db.collection("testCases").where('timestamp', '==', testCase.data.timestamp);
+        docRef.get().then(function(querySnapshot){
+          querySnapshot.forEach(function(doc){
+            doc.ref.delete()
+          })
+        })
+      
+      return testCase;
     })
   };
+  // const createTestCase = (e) => {
+  //   e.preventDefault();
+
+  //   db.collection("testCases").add({
+  //     title: input,
+  //     requirement: "Who cares",
+  //     assignee: "Lior Alon",
+  //     run: "No Run",
+  //     status: "Passed",
+  //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  //   });
+  //   setInput("");
+  // };
+
+  // const removeTestCase = (e) => {
+  //   const docRef = db.collection("testCases").where('title', '==', '');
+  //   docRef.get().then(function(querySnapshot){
+  //     querySnapshot.forEach(function(doc){
+  //       doc.ref.delete()
+  //     })
+  //   })
+  // };
 
   return (
     <div className="test-cases-header">
@@ -63,23 +91,29 @@ function TestCasesHeader({isAnyChecked}) {
             <FilterListOutlinedIcon sx={{ color: "#863654" }} />
           </IconButton>
         </Tooltip>
-        {!isAnyChecked && <Tooltip title="New" placement="bottom">
-          <Link to="/create">
-            <IconButton>
+        { (
+          <Tooltip title="New" placement="bottom">
+            <Link to="/create">
+              <IconButton>
+                <AddOutlinedIcon sx={{ color: "#863654" }} />
+              </IconButton>
+            </Link>
+          </Tooltip>
+        )}
+        {
+          <Tooltip title="Add to Suite" placement="bottom">
+            <IconButton onClick={addSelectedToSuite}>
               <AddOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
-          </Link>
-        </Tooltip>}
-        {isAnyChecked && <Tooltip title="Add to Suite" placement="bottom">
-          <IconButton onClick={addToSuite}>
-            <AddOutlinedIcon sx={{ color: "#863654" }} />
-          </IconButton>
-        </Tooltip>}
-        {isAnyChecked && <Tooltip title="Remove" placement="bottom">
-          <IconButton onClick={removeHandler}>
-            <ClearOutlinedIcon sx={{ color: "#863654" }} />
-          </IconButton>
-        </Tooltip>}
+          </Tooltip>
+        }
+        {
+          <Tooltip title="Remove" placement="bottom">
+            <IconButton onClick={removeHandler}>
+              <ClearOutlinedIcon sx={{ color: "#863654" }} />
+            </IconButton>
+          </Tooltip>
+        }
       </div>
       {removeModalIsOpen && (
         <RemoveModal

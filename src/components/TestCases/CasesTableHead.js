@@ -2,16 +2,21 @@ import { Checkbox } from "@mui/material";
 import { useState } from "react";
 import { db } from "../../firebase";
 import "./CasesTableHead.css";
-import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
-import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
+import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
+import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 
-function CasesTableHead({ headClickHandler, isAllChecked, isSomeChecked, setTestCases }) {
-  const [asc, setAsc] = useState('asc');
-  
+function CasesTableHead({
+  headClickHandler,
+  isAllChecked,
+  isSomeChecked,
+  setTestCases,
+}) {
+  const [asc, setAsc] = useState("asc");
+
   function onTitleClickHandler() {
-    asc == 'asc' ? setAsc('desc') : setAsc('asc');
+    asc === "asc" ? setAsc("desc") : setAsc("asc");
     db.collection("testCases")
-      .orderBy('title', asc)
+      .orderBy("title", asc)
       .onSnapshot((snapshot) =>
         setTestCases(
           snapshot.docs.map((doc) => ({
@@ -21,7 +26,6 @@ function CasesTableHead({ headClickHandler, isAllChecked, isSomeChecked, setTest
         )
       );
   }
-  
 
   return (
     <div className="casesTableHead">
@@ -35,8 +39,10 @@ function CasesTableHead({ headClickHandler, isAllChecked, isSomeChecked, setTest
       </div>
       <div onClick={onTitleClickHandler} className="casesTableHead__title">
         <b>Title</b>
-        {(asc === 'asc') && <ArrowUpwardOutlinedIcon sx={{ color: "#863654" }} />}
-        {(asc === 'desc') && <ArrowDownwardOutlinedIcon sx={{ color: "#863654" }} />}
+        {asc === "asc" && <ArrowUpwardOutlinedIcon sx={{ color: "#863654" }} />}
+        {asc === "desc" && (
+          <ArrowDownwardOutlinedIcon sx={{ color: "#863654" }} />
+        )}
       </div>
       <div className="casesTableHead__requirement">
         <b>Requirement</b>

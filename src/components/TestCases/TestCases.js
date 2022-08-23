@@ -3,12 +3,14 @@ import { db } from "../../firebase";
 import CasesTableHead from "./CasesTableHead";
 import TestCaseItem from "./TestCaseItem";
 
-function TestCases({ isSomeoneChecked }) {
-  const [testCases, setTestCases] = useState([]);
+function TestCases({testCases, setTestCases}) {
+  
   const [order, setOrder] = useState("timestamp");
 
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [isSomeChecked, setIsSomeChecked] = useState(false);
+
+  
 
   const headClickHandler = () => {
     setIsAllChecked(!isAllChecked);
@@ -33,9 +35,9 @@ function TestCases({ isSomeoneChecked }) {
   useEffect(() =>{
     let checkedCasesAmount = testCases.filter(e => e.isChecked).length;
     let casesAmount = testCases.length;
-    setIsSomeChecked(checkedCasesAmount != 0 && checkedCasesAmount < casesAmount)
-    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount != 0)
-  }, testCases)
+    setIsSomeChecked(checkedCasesAmount !== 0 && checkedCasesAmount < casesAmount)
+    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount !== 0)
+  }, [testCases])
 
   useEffect(() => {
     db.collection("testCases")

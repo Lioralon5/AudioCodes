@@ -8,11 +8,11 @@ import { db } from "../../firebase";
 import RemoveModal from "../RemoveModal";
 import BackDrop from "../BackDrop";
 
-function SuiteHeader() {
+function SuiteHeader({suiteCases}) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
   function deleteHandler() {
     setRemoveModalIsOpen(false);
-    removeTestCase();
+    removeSelectedSuiteCases();
   }
 
   function removeHandler() {
@@ -22,19 +22,23 @@ function SuiteHeader() {
   function closeRemoveModalHandler() {
     setRemoveModalIsOpen(false);
   }
-
-  const removeTestCase = (e) => {
-    const docRef = db.collection("suiteCases").where("title", "==", "input");
-    docRef.get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        doc.ref.delete();
-      });
-    });
+  const removeSelectedSuiteCases = () => {
+    suiteCases.filter((suiteCase) => suiteCase.isChecked).map(suiteCase => {
+        const docRef = db.collection("suiteCases").where('timestamp', '==', suiteCase.data.timestamp);
+        docRef.get().then(function(querySnapshot){
+          querySnapshot.forEach(function(doc){
+            doc.ref.delete()
+          })
+        })
+      
+      return suiteCase;
+    })
   };
+
   return (
     <div className="suite-header">
       <div className="suite-header__left">
-        <h3>Test Cases</h3>
+        <h3>Suite</h3>
       </div>
 
       <div className="suite-header__right">

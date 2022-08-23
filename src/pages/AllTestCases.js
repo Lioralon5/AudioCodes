@@ -5,15 +5,12 @@ import TestCasesHeader from "../components/TestCases/TestCasesHeader"
 import './AllTestCases.css'
 
 function AllTestCases() {
-  const [isAnyChecked, setIsAnyChecked] = useState(false);
-  const isSomeoneChecked = e => {
-    setIsAnyChecked(e);
-  }
+  const [testCases, setTestCases] = useState([]);
 
   return (
     <div className="allTestCases">
-      <TestCasesHeader isAnyChecked={isAnyChecked} />
-      <TestCases isSomeoneChecked={isSomeoneChecked} />
+      <TestCasesHeader testCases={testCases} />
+      <TestCases testCases={testCases} setTestCases={setTestCases} />
     </div>
 
   )
