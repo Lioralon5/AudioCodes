@@ -11,14 +11,15 @@ import Filter from "../Filter";
 import { db } from "../../firebase";
 import firebase from "firebase";
 
-function TestCasesHeader({ isAnyChecked }) {
+function TestCasesHeader({isAnyChecked}) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
+
 
   const addToSuite = (e) => {
     e.preventDefault();
 
     db.collection("suiteCases").add({
-      title: "input",
+      title: 'input',
       requirement: "Who cares",
       assignee: "Lior Alon",
       run: "No Run",
@@ -29,7 +30,7 @@ function TestCasesHeader({ isAnyChecked }) {
 
   function deleteHandler() {
     setRemoveModalIsOpen(false);
-    removeSelectedTestCases();
+    removeTestCase();
   }
 
   function removeHandler() {
@@ -40,25 +41,15 @@ function TestCasesHeader({ isAnyChecked }) {
     setRemoveModalIsOpen(false);
   }
 
-  const removeSelectedTestCases = (e) => {
-    const docRef = db.collection("testCases").where("title", "==", 'blalbla');
-    console.log(docRef.get.toString);
-    docRef.get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        doc.ref.delete();
-      });
-    });
+  const removeTestCase = (e) => {
+    const docRef = db.collection("testCases").where('title', '==', '');
+    docRef.get().then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        doc.ref.delete()
+      })
+    })
   };
-  // const onChecked = (id) => {
-  //   setTestCases(testCases.map(e => {
-  //     if(e.id === id){
-  //       return {...e, isChecked: !e.isChecked};
-  //     }
-  //     else {
-  //       return e;
-  //     }})
-  //   );
-  // };
+
   return (
     <div className="test-cases-header">
       <div className="test-cases-header__left">
@@ -72,29 +63,23 @@ function TestCasesHeader({ isAnyChecked }) {
             <FilterListOutlinedIcon sx={{ color: "#863654" }} />
           </IconButton>
         </Tooltip>
-        {!isAnyChecked && (
-          <Tooltip title="New" placement="bottom">
-            <Link to="/create">
-              <IconButton>
-                <AddOutlinedIcon sx={{ color: "#863654" }} />
-              </IconButton>
-            </Link>
-          </Tooltip>
-        )}
-        {isAnyChecked && (
-          <Tooltip title="Add to Suite" placement="bottom">
-            <IconButton onClick={addToSuite}>
+        {!isAnyChecked && <Tooltip title="New" placement="bottom">
+          <Link to="/create">
+            <IconButton>
               <AddOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
-          </Tooltip>
-        )}
-        {
-          <Tooltip title="Remove" placement="bottom">
-            <IconButton onClick={removeHandler}>
-              <ClearOutlinedIcon sx={{ color: "#863654" }} />
-            </IconButton>
-          </Tooltip>
-        }
+          </Link>
+        </Tooltip>}
+        {isAnyChecked && <Tooltip title="Add to Suite" placement="bottom">
+          <IconButton onClick={addToSuite}>
+            <AddOutlinedIcon sx={{ color: "#863654" }} />
+          </IconButton>
+        </Tooltip>}
+        {isAnyChecked && <Tooltip title="Remove" placement="bottom">
+          <IconButton onClick={removeHandler}>
+            <ClearOutlinedIcon sx={{ color: "#863654" }} />
+          </IconButton>
+        </Tooltip>}
       </div>
       {removeModalIsOpen && (
         <RemoveModal

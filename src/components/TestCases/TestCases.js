@@ -1,24 +1,67 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import TestCasesContext from "../../store/testCases-context";
 import CasesTableHead from "./CasesTableHead";
 import TestCaseItem from "./TestCaseItem";
 
-function TestCases() {
-  const ctx = useContext(TestCasesContext);
-  
+function TestCases({ isSomeoneChecked }) {
+  const [testCases, setTestCases] = useState([]);
   const [order, setOrder] = useState("timestamp");
 
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [isSomeChecked, setIsSomeChecked] = useState(false);
+
+  const headClickHandler = () => {
+    setIsAllChecked(!isAllChecked);
+    setAllItemsCheck(!isAllChecked);
+  };
+
+  const setAllItemsCheck = (e) => {
+    setTestCases(testCases.map((t) => ({ ...t, isChecked: e })));
+  };
+
+  const onChecked = (id) => {
+    setTestCases(testCases.map(e => {
+      if(e.id === id){
+        return {...e, isChecked: !e.isChecked};
+      }
+      else {
+        return e;
+      }})
+    );
+  };
+  
+  useEffect(() =>{
+    let checkedCasesAmount = testCases.filter(e => e.isChecked).length;
+    let casesAmount = testCases.length;
+    setIsSomeChecked(checkedCasesAmount != 0 && checkedCasesAmount < casesAmount)
+    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount != 0)
+  }, testCases)
+
+  useEffect(() => {
+    db.collection("testCases")
+      .orderBy(order, "asc")
+      .onSnapshot((snapshot) =>
+        setTestCases(
+          snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              data: doc.data(),
+              isChecked: false,
+            };
+          })
+        )
+      );
+  }, []);
 
   return (
     <div className="testCases">
       <CasesTableHead
-        headClickHandler={ctx.headClickHandler}
-        isAllChecked={ctx.isAllChecked}
-        isSomeChecked={ctx.isSomeChecked}
-        setTestCases={ctx.setTestCases}
+        headClickHandler={headClickHandler}
+        isAllChecked={isAllChecked}
+        isSomeChecked={isSomeChecked}
+        setTestCases={setTestCases}
       />
-      {ctx.testCases.map(
+      {testCases.map(
         ({
           id,
           data: { title, requirement, assignee, run, status },
@@ -33,7 +76,7 @@ function TestCases() {
             run={run}
             status={status}
             isChecked={isChecked}
-            onChecked={ctx.onChecked}
+            onChecked={onChecked}
           />
         )
       )}
