@@ -1,4 +1,9 @@
 .app {
     display: flex;
     background-color: #FFFFFF;
+    
+}
+.app__body {
+    display: flex;
+    flex: 1;
 }
