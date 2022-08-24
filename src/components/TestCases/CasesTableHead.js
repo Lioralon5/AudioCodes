@@ -16,7 +16,7 @@ function CasesTableHead({
   function onTitleClickHandler() {
     asc === "asc" ? setAsc("desc") : setAsc("asc");
     db.collection("testCases")
-      .orderBy("title", asc)
+      .orderBy("title", asc).limit(3)
       .onSnapshot((snapshot) =>
         setTestCases(
           snapshot.docs.map((doc) => ({

@@ -29,6 +29,7 @@ function TestCasesHeader({
       .filter((testCase) => testCase.isChecked)
       .map((testCase) => {
         db.collection("suiteCases").add({
+          id: testCase.id,
           title: testCase.data.title,
           requirement: testCase.data.requirement,
           assignee: testCase.data.assignee,
@@ -36,6 +37,7 @@ function TestCasesHeader({
           status: testCase.data.status,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
+        console.log(testCases);
         return testCase;
       });
   };
@@ -43,20 +45,23 @@ function TestCasesHeader({
   const cancelFilterHandler = () => {
     setIsFilterActive(false);
     setAreCasesFiltered(false);
-    if (origin.length !== 0) setTestCases(origin);
+    noFilter();
+  };
+
+  const noFilter = () => {
+    db.collection("testCases").onSnapshot((snapshot) => {
+      setTestCases(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    });
   };
 
   function deleteHandler() {
     setRemoveModalIsOpen(false);
     removeSelectedTestCases();
-  }
-
-  function removeHandler() {
-    setRemoveModalIsOpen(true);
-  }
-
-  function closeRemoveModalHandler() {
-    setRemoveModalIsOpen(false);
   }
 
   const removeSelectedTestCases = () => {
@@ -72,7 +77,7 @@ function TestCasesHeader({
           });
           const suiteDocRef = db
             .collection("suiteCases")
-            .where("title", "==", testCase.data.title);
+            .where("id", "==", testCase.id);
           suiteDocRef.get().then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
               doc.ref.delete();
@@ -83,15 +88,28 @@ function TestCasesHeader({
       });
   };
   useEffect(() => {
-    setTestCases(
-      origin.filter((testCase) => {
-        if (searchTerm === "") {
-          return testCase;
-        } else if (testCase.data.title.startsWith(searchTerm)) {
-          return testCase;
-        }
-      })
-    );
+    if (searchTerm === "") {
+      noFilter();
+    }
+    else{
+    const end =
+      searchTerm.slice(0, searchTerm.length - 1) +
+      String.fromCharCode(
+        searchTerm
+          .slice(searchTerm.length - 1, searchTerm.length)
+          .charCodeAt(0) + 1
+      );
+    db.collection("testCases")
+      .where("title", ">=", searchTerm)
+      .where("title", "<", end)
+      .onSnapshot((snapshot) => {
+        setTestCases(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        );
+      })};
   }, [searchTerm]);
 
 
@@ -158,7 +176,7 @@ function TestCasesHeader({
         )}
         {(isSomeChecked || isAllChecked) && (
           <Tooltip title="Remove" placement="bottom">
-            <IconButton onClick={removeHandler}>
+            <IconButton onClick={() => setRemoveModalIsOpen(true)}>
               <ClearOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
           </Tooltip>
@@ -166,11 +184,11 @@ function TestCasesHeader({
       </div>
       {removeModalIsOpen && (
         <RemoveModal
-          onCancel={closeRemoveModalHandler}
+          onCancel={() => setRemoveModalIsOpen(false)}
           onDelete={deleteHandler}
         />
       )}
-      {removeModalIsOpen && <BackDrop onClick={closeRemoveModalHandler} />}
+      {removeModalIsOpen && <BackDrop onClick={() => setRemoveModalIsOpen(false)} />}
     </div>
   );
 }

@@ -1,118 +1,42 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
+import { db } from "../firebase";
 
 function Filter({
   isSuite,
-  testCases,
   setTestCases,
-  suiteCases,
   setSuiteCases,
-  setOrigin,
   setIsFilterActive,
   setAreCasesFiltered,
   setIsSuiteFilterActive,
   setAreSuiteCasesFiltered,
 }) {
-  //Filter by requirement
-  const filterByRequirement = (e) => {
-    if (isSuite) {
-      filterSuiteByRequirement(e);
-    } else {
-      setAreCasesFiltered(true);
-      setIsFilterActive(false);
-      setOrigin(testCases);
-      setTestCases(
-        testCases.filter(
-          (testCase) => testCase.data.requirement === e.target.textContent
-        )
-      );
-    }
-  };
-  const filterSuiteByRequirement = (e) => {
-    setAreSuiteCasesFiltered(true);
-    setIsSuiteFilterActive(false);
-    setOrigin(suiteCases);
-    setSuiteCases(
-      suiteCases.filter(
-        (suiteCase) => suiteCase.data.requirement === e.target.textContent
-      )
-    );
-  };
+  const filterCases = (e, filter) => {
+    const cases = isSuite ? "suiteCases" : "testCases";
 
-  //Filter by Assignee
-  const filterByAssignee = (e) => {
-    if (isSuite) {
-      filterSuiteByAssignee(e);
-    } else {
-      setAreCasesFiltered(true);
-      setIsFilterActive(false);
-      setOrigin(testCases);
-      setTestCases(
-        testCases.filter(
-          (testCase) => testCase.data.assignee === e.target.textContent
-        )
-      );
-    }
-  };
-  const filterSuiteByAssignee = (e) => {
-    setAreSuiteCasesFiltered(true);
-    setIsSuiteFilterActive(false);
-    setOrigin(suiteCases);
-    setSuiteCases(
-      suiteCases.filter(
-        (suiteCase) => suiteCase.data.assignee === e.target.textContent
-      )
-    );
-  };
-  //Filter by Run
-  const filterByRun = (e) => {
-    if (isSuite) {
-      filterSuiteByRun(e);
-    } else {
-      setAreCasesFiltered(true);
-      setIsFilterActive(false);
-      setOrigin(testCases);
-      setTestCases(
-        testCases.filter(
-          (testCase) => testCase.data.run === e.target.textContent
-        )
-      );
-    }
-  };
-  const filterSuiteByRun = (e) => {
-    setAreSuiteCasesFiltered(true);
-    setIsSuiteFilterActive(false);
-    setOrigin(suiteCases);
-    setSuiteCases(
-      suiteCases.filter(
-        (suiteCase) => suiteCase.data.run === e.target.textContent
-      )
-    );
-  };
-  //Filter by Status
-  const filterByStatus = (e) => {
-    if (isSuite) {
-      filterSuiteByStatus(e);
-    } else {
-      setAreCasesFiltered(true);
-      setIsFilterActive(false);
-      setOrigin(testCases);
-      setTestCases(
-        testCases.filter(
-          (testCase) => testCase.data.status === e.target.textContent
-        )
-      );
-    }
-  };
-  const filterSuiteByStatus = (e) => {
-    setAreSuiteCasesFiltered(true);
-    setIsSuiteFilterActive(false);
-    setOrigin(suiteCases);
-    setSuiteCases(
-      suiteCases.filter(
-        (suiteCase) => suiteCase.data.status === e.target.textContent
-      )
-    );
+    db.collection(cases)
+      .where(filter, "==", e.target.textContent)
+      .onSnapshot((snapshot) => {
+        if (isSuite) {
+          setAreSuiteCasesFiltered(true);
+          setIsSuiteFilterActive(false);
+          setSuiteCases(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        } else {
+          setAreCasesFiltered(true);
+          setIsFilterActive(false);
+          setTestCases(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        }
+      });
   };
 
   const [filter, setFilter] = useState({
@@ -175,10 +99,10 @@ function Filter({
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Requirement</InputLabel>
           <Select defaultOpen label="Requirement">
-            <MenuItem value={0} onClick={filterByRequirement}>
+            <MenuItem value={0} onClick={(e) => filterCases(e, "requirement")}>
               ST functional
             </MenuItem>
-            <MenuItem value={1} onClick={filterByRequirement}>
+            <MenuItem value={1} onClick={(e) => filterCases(e, "requirement")}>
               MI functional
             </MenuItem>
           </Select>
@@ -188,10 +112,10 @@ function Filter({
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Assignee</InputLabel>
           <Select defaultOpen label="Assignee">
-            <MenuItem value={0} onClick={filterByAssignee}>
+            <MenuItem value={0} onClick={(e) => filterCases(e, "assignee")}>
               Lior Alon
             </MenuItem>
-            <MenuItem value={1} onClick={filterByAssignee}>
+            <MenuItem value={1} onClick={(e) => filterCases(e, "assignee")}>
               Goku
             </MenuItem>
           </Select>
@@ -201,13 +125,13 @@ function Filter({
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Run</InputLabel>
           <Select defaultOpen label="Run">
-            <MenuItem value={0} onClick={filterByRun}>
+            <MenuItem value={0} onClick={(e) => filterCases(e, "run")}>
               No Run
             </MenuItem>
-            <MenuItem value={1} onClick={filterByRun}>
+            <MenuItem value={1} onClick={(e) => filterCases(e, "run")}>
               Passed
             </MenuItem>
-            <MenuItem value={2} onClick={filterByRun}>
+            <MenuItem value={2} onClick={(e) => filterCases(e, "run")}>
               Failed
             </MenuItem>
           </Select>
@@ -217,13 +141,13 @@ function Filter({
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Status</InputLabel>
           <Select defaultOpen label="Status">
-            <MenuItem value={0} onClick={filterByStatus}>
+            <MenuItem value={0} onClick={(e) => filterCases(e, "status")}>
               Done
             </MenuItem>
-            <MenuItem value={1} onClick={filterByStatus}>
+            <MenuItem value={1} onClick={(e) => filterCases(e, "status")}>
               Open
             </MenuItem>
-            <MenuItem value={2} onClick={filterByStatus}>
+            <MenuItem value={2} onClick={(e) => filterCases(e, "status")}>
               WIP
             </MenuItem>
           </Select>

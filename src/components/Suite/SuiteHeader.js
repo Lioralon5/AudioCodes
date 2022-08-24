@@ -24,7 +24,7 @@ function SuiteHeader({
   const cancelFilterHandler = () => {
     setIsSuiteFilterActive(false);
     setAreSuiteCasesFiltered(false);
-    if (origin.length !== 0) setSuiteCases(origin);
+    noFilter();
   };
 
   function deleteHandler() {
@@ -34,6 +34,7 @@ function SuiteHeader({
 
   function removeHandler() {
     setRemoveModalIsOpen(true);
+    console.log(suiteCases)
   }
 
   function closeRemoveModalHandler() {
@@ -56,16 +57,40 @@ function SuiteHeader({
       });
   };
   useEffect(() => {
-    setSuiteCases(
-      origin.filter((suiteCase) => {
-        if (searchTerm === "") {
-          return suiteCase;
-        } else if (suiteCase.data.title.startsWith(searchTerm)) {
-          return suiteCase;
-        }
-      })
-    );
+    if (searchTerm === "") {
+      noFilter();
+    }
+    else{
+    const end =
+      searchTerm.slice(0, searchTerm.length - 1) +
+      String.fromCharCode(
+        searchTerm
+          .slice(searchTerm.length - 1, searchTerm.length)
+          .charCodeAt(0) + 1
+      );
+    db.collection("suiteCases")
+      .where("title", ">=", searchTerm)
+      .where("title", "<", end)
+      .onSnapshot((snapshot) => {
+        setSuiteCases(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        );
+      })};
   }, [searchTerm]);
+
+  const noFilter = () => {
+    db.collection("suiteCases").onSnapshot((snapshot) => {
+      setSuiteCases(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    });
+  };
 
 
 
