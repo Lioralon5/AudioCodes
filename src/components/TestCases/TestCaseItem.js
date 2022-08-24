@@ -1,11 +1,12 @@
 import { Checkbox } from '@mui/material'
+import {forwardRef} from 'react'
 import './TestCaseItem.css'
 
-function TestCaseItem({ id, title, requirement, assignee, run, status, isChecked, onChecked}) {
+const TestCaseItem = forwardRef(({ id, title, requirement, assignee, run, status, isChecked, onChecked}, ref) => {
 
 
   return (
-    <div className='test-case-item'>
+    <div ref={ref} className='test-case-item'>
       <div className='test-case-item__options'>
         <Checkbox onClick={() => onChecked(id)} checked={isChecked} sx={{'&.Mui-checked':{color: "#863654",},}} />
       </div>
@@ -26,6 +27,6 @@ function TestCaseItem({ id, title, requirement, assignee, run, status, isChecked
       </div>
     </div>
   )
-}
+})
 
 export default TestCaseItem

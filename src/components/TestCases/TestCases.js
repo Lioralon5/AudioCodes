@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import CasesTableHead from "./CasesTableHead";
 import TestCaseItem from "./TestCaseItem";
+import FlipMove from "react-flip-move"
 
 function TestCases({
   testCases,
@@ -64,25 +65,27 @@ function TestCases({
         isSomeChecked={isSomeChecked}
         setTestCases={setTestCases}
       />
-      {testCases.map(
-        ({
-          id,
-          data: { title, requirement, assignee, run, status },
-          isChecked,
-        }) => (
-          <TestCaseItem
-            id={id}
-            key={id}
-            title={title}
-            requirement={requirement}
-            assignee={assignee}
-            run={run}
-            status={status}
-            isChecked={isChecked}
-            onChecked={onChecked}
-          />
-        )
-      )}
+      <FlipMove>
+        {testCases.map(
+          ({
+            id,
+            data: { title, requirement, assignee, run, status },
+            isChecked,
+          }) => (
+            <TestCaseItem
+              id={id}
+              key={id}
+              title={title}
+              requirement={requirement}
+              assignee={assignee}
+              run={run}
+              status={status}
+              isChecked={isChecked}
+              onChecked={onChecked}
+            />
+          )
+        )}
+      </FlipMove>
     </div>
   );
 }

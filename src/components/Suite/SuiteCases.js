@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import SuiteCaseItem from "./SuiteCaseItem";
 import SuiteTableHead from "./SuiteTableHead";
+import FlipMove from "react-flip-move";
 
 function SuiteCases({
   suiteCases,
@@ -69,25 +70,27 @@ function SuiteCases({
         isSomeSuiteChecked={isSomeSuiteChecked}
         setSuiteCases={setSuiteCases}
       />
-      {suiteCases.map(
-        ({
-          id,
-          data: { title, requirement, assignee, run, status },
-          isChecked,
-        }) => (
-          <SuiteCaseItem
-            id={id}
-            key={id}
-            title={title}
-            requirement={requirement}
-            assignee={assignee}
-            run={run}
-            status={status}
-            isChecked={isChecked}
-            onChecked={onChecked}
-          />
-        )
-      )}
+      <FlipMove>
+        {suiteCases.map(
+          ({
+            id,
+            data: { title, requirement, assignee, run, status },
+            isChecked,
+          }) => (
+            <SuiteCaseItem
+              id={id}
+              key={id}
+              title={title}
+              requirement={requirement}
+              assignee={assignee}
+              run={run}
+              status={status}
+              isChecked={isChecked}
+              onChecked={onChecked}
+            />
+          )
+        )}
+      </FlipMove>
     </div>
   );
 }

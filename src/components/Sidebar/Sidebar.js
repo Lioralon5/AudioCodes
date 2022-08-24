@@ -1,6 +1,5 @@
 import "./Sidebar.css";
 import Vision from "./vision.png";
-import emailLogo from "./emailLogo.png";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import IconButton from "@mui/material/IconButton";
@@ -11,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { logout, selectUser } from "../../features/userSlice";
 import { auth } from "../../firebase";
 import { Avatar } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
+
 
 function Sidebar() {
   const [isTestsPageActive, setIsTestsPageActive] = useState(true);
