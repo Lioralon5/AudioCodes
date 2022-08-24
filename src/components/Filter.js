@@ -7,19 +7,19 @@ function Filter({
   setTestCases,
   suiteCases,
   setSuiteCases,
-  origin,
   setOrigin,
   setIsFilterActive,
   setAreCasesFiltered,
+  setIsSuiteFilterActive,
+  setAreSuiteCasesFiltered,
 }) {
-
   //Filter by requirement
   const filterByRequirement = (e) => {
-    setAreCasesFiltered(true)
-    setIsFilterActive(false);
     if (isSuite) {
-      filterSuiteByRequirement();
+      filterSuiteByRequirement(e);
     } else {
+      setAreCasesFiltered(true);
+      setIsFilterActive(false);
       setOrigin(testCases);
       setTestCases(
         testCases.filter(
@@ -29,6 +29,8 @@ function Filter({
     }
   };
   const filterSuiteByRequirement = (e) => {
+    setAreSuiteCasesFiltered(true);
+    setIsSuiteFilterActive(false);
     setOrigin(suiteCases);
     setSuiteCases(
       suiteCases.filter(
@@ -39,11 +41,11 @@ function Filter({
 
   //Filter by Assignee
   const filterByAssignee = (e) => {
-    setAreCasesFiltered(true)
-    setIsFilterActive(false);
     if (isSuite) {
-      filterSuiteByAssignee();
+      filterSuiteByAssignee(e);
     } else {
+      setAreCasesFiltered(true);
+      setIsFilterActive(false);
       setOrigin(testCases);
       setTestCases(
         testCases.filter(
@@ -53,6 +55,8 @@ function Filter({
     }
   };
   const filterSuiteByAssignee = (e) => {
+    setAreSuiteCasesFiltered(true);
+    setIsSuiteFilterActive(false);
     setOrigin(suiteCases);
     setSuiteCases(
       suiteCases.filter(
@@ -62,11 +66,11 @@ function Filter({
   };
   //Filter by Run
   const filterByRun = (e) => {
-    setAreCasesFiltered(true)
-    setIsFilterActive(false);
     if (isSuite) {
-      filterSuiteByRun();
+      filterSuiteByRun(e);
     } else {
+      setAreCasesFiltered(true);
+      setIsFilterActive(false);
       setOrigin(testCases);
       setTestCases(
         testCases.filter(
@@ -76,6 +80,8 @@ function Filter({
     }
   };
   const filterSuiteByRun = (e) => {
+    setAreSuiteCasesFiltered(true);
+    setIsSuiteFilterActive(false);
     setOrigin(suiteCases);
     setSuiteCases(
       suiteCases.filter(
@@ -85,11 +91,11 @@ function Filter({
   };
   //Filter by Status
   const filterByStatus = (e) => {
-    setAreCasesFiltered(true)
-    setIsFilterActive(false);
     if (isSuite) {
-      filterSuiteByStatus();
+      filterSuiteByStatus(e);
     } else {
+      setAreCasesFiltered(true);
+      setIsFilterActive(false);
       setOrigin(testCases);
       setTestCases(
         testCases.filter(
@@ -99,6 +105,8 @@ function Filter({
     }
   };
   const filterSuiteByStatus = (e) => {
+    setAreSuiteCasesFiltered(true);
+    setIsSuiteFilterActive(false);
     setOrigin(suiteCases);
     setSuiteCases(
       suiteCases.filter(

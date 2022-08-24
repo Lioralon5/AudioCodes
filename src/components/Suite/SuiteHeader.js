@@ -67,11 +67,7 @@ function SuiteHeader({
     );
   }, [searchTerm]);
 
-  useEffect(() => {
-    setOrigin(() => {
-      return suiteCases;
-    });
-  }, [suiteCases]);
+
 
   return (
     <div className="suite-header">

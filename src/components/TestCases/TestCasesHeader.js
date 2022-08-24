@@ -3,7 +3,6 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import FilterListOffOutlinedIcon from "@mui/icons-material/FilterListOffOutlined";
-import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, TextField, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -95,11 +94,6 @@ function TestCasesHeader({
     );
   }, [searchTerm]);
 
-  useEffect(() => {
-    setOrigin(() => {
-      return testCases;
-    });
-  }, [testCases]);
 
   return (
     <div className="test-cases-header">
