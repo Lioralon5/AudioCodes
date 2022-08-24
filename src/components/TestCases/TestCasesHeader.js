@@ -3,19 +3,27 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import FilterListOffOutlinedIcon from "@mui/icons-material/FilterListOffOutlined";
-import { IconButton, Tooltip } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { IconButton, TextField, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RemoveModal from "../RemoveModal";
 import BackDrop from "../BackDrop";
 import Filter from "../Filter";
 import { db } from "../../firebase";
 import firebase from "firebase";
 
-function TestCasesHeader({ testCases, setTestCases, isSomeChecked }) {
+function TestCasesHeader({
+  testCases,
+  setTestCases,
+  isSomeChecked,
+  isAllChecked,
+}) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
   const [isFilterActive, setIsFilterActive] = useState(false);
+  const [areCasesFiltered, setAreCasesFiltered] = useState(false);
   const [origin, setOrigin] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const addSelectedToSuite = (e) => {
     testCases
@@ -34,7 +42,8 @@ function TestCasesHeader({ testCases, setTestCases, isSomeChecked }) {
   };
 
   const cancelFilterHandler = () => {
-    setIsFilterActive(!isFilterActive);
+    setIsFilterActive(false);
+    setAreCasesFiltered(false);
     if (origin.length !== 0) setTestCases(origin);
   };
 
@@ -74,15 +83,45 @@ function TestCasesHeader({ testCases, setTestCases, isSomeChecked }) {
         return testCase;
       });
   };
+  useEffect(() => {
+    setTestCases(
+      origin.filter((testCase) => {
+        if (searchTerm === "") {
+          return testCase;
+        } else if (testCase.data.title.startsWith(searchTerm)) {
+          return testCase;
+        }
+      })
+    );
+  }, [searchTerm]);
+
+  useEffect(() => {
+    setOrigin(() => {
+      return testCases;
+    });
+  }, [testCases]);
 
   return (
     <div className="test-cases-header">
       <div className="test-cases-header__left">
         <h3>Test Cases</h3>
+        <form>
+          <TextField
+            id="search-bar"
+            className="text"
+            onInput={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+            label="Search..."
+            variant="outlined"
+            placeholder="Search..."
+            size="small"
+          />
+        </form>
       </div>
 
       <div className="test-cases-header__right">
-        {isFilterActive && (
+        {(isFilterActive || areCasesFiltered) && (
           <Tooltip title="Cancel" placement="bottom">
             <IconButton onClick={cancelFilterHandler}>
               <FilterListOffOutlinedIcon sx={{ color: "#863654" }} />
@@ -97,11 +136,12 @@ function TestCasesHeader({ testCases, setTestCases, isSomeChecked }) {
             origin={origin}
             setOrigin={setOrigin}
             setIsFilterActive={setIsFilterActive}
+            setAreCasesFiltered={setAreCasesFiltered}
           />
         )}
-        {!isFilterActive && (
+        {!isFilterActive && !areCasesFiltered && (
           <Tooltip title="Filter" placement="bottom">
-            <IconButton onClick={() => setIsFilterActive(!isFilterActive)}>
+            <IconButton onClick={() => setIsFilterActive(true)}>
               <FilterListOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
           </Tooltip>
@@ -122,7 +162,7 @@ function TestCasesHeader({ testCases, setTestCases, isSomeChecked }) {
             </IconButton>
           </Tooltip>
         )}
-        {isSomeChecked && (
+        {(isSomeChecked || isAllChecked) && (
           <Tooltip title="Remove" placement="bottom">
             <IconButton onClick={removeHandler}>
               <ClearOutlinedIcon sx={{ color: "#863654" }} />

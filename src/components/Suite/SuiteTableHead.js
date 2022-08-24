@@ -7,8 +7,8 @@ import { useState } from "react";
 
 function SuiteTableHead({
   headClickHandler,
-  isAllChecked,
-  isSomeChecked,
+  isAllSuiteChecked,
+  isSomeSuiteChecked,
   setSuiteCases,
 }) {
   const [asc, setAsc] = useState("asc");
@@ -31,8 +31,8 @@ function SuiteTableHead({
       <div className="suiteTableHead__options">
         <Checkbox
           onClick={headClickHandler}
-          checked={isAllChecked}
-          indeterminate={isSomeChecked}
+          checked={isAllSuiteChecked}
+          indeterminate={isSomeSuiteChecked}
           sx={{ "&.Mui-checked": { color: "#863654" } }}
         />
       </div>

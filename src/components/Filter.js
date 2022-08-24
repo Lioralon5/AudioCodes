@@ -10,10 +10,12 @@ function Filter({
   origin,
   setOrigin,
   setIsFilterActive,
+  setAreCasesFiltered,
 }) {
 
   //Filter by requirement
   const filterByRequirement = (e) => {
+    setAreCasesFiltered(true)
     setIsFilterActive(false);
     if (isSuite) {
       filterSuiteByRequirement();
@@ -37,6 +39,7 @@ function Filter({
 
   //Filter by Assignee
   const filterByAssignee = (e) => {
+    setAreCasesFiltered(true)
     setIsFilterActive(false);
     if (isSuite) {
       filterSuiteByAssignee();
@@ -59,6 +62,7 @@ function Filter({
   };
   //Filter by Run
   const filterByRun = (e) => {
+    setAreCasesFiltered(true)
     setIsFilterActive(false);
     if (isSuite) {
       filterSuiteByRun();
@@ -81,6 +85,7 @@ function Filter({
   };
   //Filter by Status
   const filterByStatus = (e) => {
+    setAreCasesFiltered(true)
     setIsFilterActive(false);
     if (isSuite) {
       filterSuiteByStatus();

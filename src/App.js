@@ -9,8 +9,8 @@ import Login from "./pages/Login";
 function App() {
   return (
     <div className="app">
-      <Login />
-      {/* <Sidebar />
+      {/* <Login /> */}
+      <Sidebar />
       <Route path="/" exact>
         <AllTestCases />
       </Route>
@@ -19,7 +19,7 @@ function App() {
       </Route>
       <Route path="/create">
         <CreateNewTestCase />
-      </Route> */}
+      </Route>
     </div>
   );
 }

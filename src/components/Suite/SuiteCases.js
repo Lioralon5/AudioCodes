@@ -3,41 +3,46 @@ import { db } from "../../firebase";
 import SuiteCaseItem from "./SuiteCaseItem";
 import SuiteTableHead from "./SuiteTableHead";
 
-function SuiteCases({ suiteCases, setSuiteCases }) {
-
+function SuiteCases({
+  suiteCases,
+  setSuiteCases,
+  isSomeSuiteChecked,
+  setIsSomeSuiteChecked,
+  isAllSuiteChecked,
+  setIsAllSuiteChecked,
+}) {
   const [order, setOrder] = useState("timestamp");
 
-  const [isAllChecked, setIsAllChecked] = useState(false);
-  const [isSomeChecked, setIsSomeChecked] = useState(false);
-
   const headClickHandler = () => {
-    setIsAllChecked(!isAllChecked);
-    setAllItemsCheck(!isAllChecked);
+    setIsAllSuiteChecked(!isAllSuiteChecked);
+    setAllItemsCheck(!isAllSuiteChecked);
   };
 
   const setAllItemsCheck = (e) => {
     setSuiteCases(suiteCases.map((t) => ({ ...t, isChecked: e })));
-    console.log(suiteCases)
   };
 
   const onChecked = (id) => {
-    setSuiteCases(suiteCases.map(e => {
-      if(e.id === id){
-        return {...e, isChecked: !e.isChecked};
-      }
-      else {
-        return e;
-      }})
+    setSuiteCases(
+      suiteCases.map((e) => {
+        if (e.id === id) {
+          return { ...e, isChecked: !e.isChecked };
+        } else {
+          return e;
+        }
+      })
     );
   };
 
   useEffect(() => {
     let checkedCasesAmount = suiteCases.filter((e) => e.isChecked).length;
     let casesAmount = suiteCases.length;
-    setIsSomeChecked(
+    setIsSomeSuiteChecked(
       checkedCasesAmount !== 0 && checkedCasesAmount < casesAmount
     );
-    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount !== 0);
+    setIsAllSuiteChecked(
+      checkedCasesAmount === casesAmount && casesAmount !== 0
+    );
   }, [suiteCases]);
 
   useEffect(() => {
@@ -60,8 +65,8 @@ function SuiteCases({ suiteCases, setSuiteCases }) {
     <div className="suiteCases">
       <SuiteTableHead
         headClickHandler={headClickHandler}
-        isAllChecked={isAllChecked}
-        isSomeChecked={isSomeChecked}
+        isAllSuiteChecked={isAllSuiteChecked}
+        isSomeSuiteChecked={isSomeSuiteChecked}
         setSuiteCases={setSuiteCases}
       />
       {suiteCases.map(

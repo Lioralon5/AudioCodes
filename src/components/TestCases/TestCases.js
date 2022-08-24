@@ -8,12 +8,9 @@ function TestCases({
   setTestCases,
   isSomeChecked,
   setIsSomeChecked,
+  isAllChecked,
+  setIsAllChecked,
 }) {
-  const [order, setOrder] = useState("timestamp");
-
-  const [isAllChecked, setIsAllChecked] = useState(false);
-
-
   const headClickHandler = () => {
     setIsAllChecked(!isAllChecked);
     setAllItemsCheck(!isAllChecked);
@@ -43,10 +40,9 @@ function TestCases({
     );
     setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount !== 0);
   }, [testCases]);
-
   useEffect(() => {
     db.collection("testCases")
-      .orderBy(order, "asc")
+      .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) =>
         setTestCases(
           snapshot.docs.map((doc) => {

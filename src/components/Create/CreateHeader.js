@@ -8,19 +8,14 @@ import firebase from "firebase";
 
 function CreateHeader(props) {
   const createTestCase = (e) => {
-    if (props.title === "") {
-      window.alert("enter title!");
-    } else {
-      db.collection("testCases").add({
-        title: props.title,
-        requirement: props.requirement,
-        assignee: props.assignee,
-        run: props.run,
-        status: props.status,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    }
-    props.setTitle("");
+    db.collection("testCases").add({
+      title: props.title,
+      requirement: props.requirement,
+      assignee: props.assignee,
+      run: props.run,
+      status: props.status,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
   };
 
   return (
@@ -29,13 +24,30 @@ function CreateHeader(props) {
         <h3>New Test Case</h3>
       </div>
       <div className="createHeader__right">
-        <Tooltip title="New" placement="bottom">
-          <Link to="/">
-            <IconButton onClick={createTestCase}>
-              <AddOutlinedIcon sx={{ color: "#863654" }} />
+        {props.title !== "" &&
+          props.requirement !== "" &&
+          props.assignee !== "" &&
+          props.run !== "" &&
+          props.status !== "" && (
+            <Tooltip title="New" placement="bottom">
+              <Link to="/">
+                <IconButton onClick={createTestCase}>
+                  <AddOutlinedIcon sx={{ color: "#863654" }} />
+                </IconButton>
+              </Link>
+            </Tooltip>
+          )}
+        {(props.title === "" ||
+          props.requirement === "" ||
+          props.assignee === "" ||
+          props.run === "" ||
+          props.status === "") && (
+          <Tooltip title="Please Fill Required Fields" placement="bottom">
+            <IconButton>
+              <AddOutlinedIcon sx={{ color: "#bdbdbd", cursor: "default" }} />
             </IconButton>
-          </Link>
-        </Tooltip>
+          </Tooltip>
+        )}
         <Tooltip title="Cancel" placement="bottom">
           <Link to="/">
             <IconButton>
