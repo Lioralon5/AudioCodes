@@ -5,7 +5,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import "./CreateInputs.css";
+import "../../CSS/CreateInputs.css";
 
 
 function CreateInputs(props) {

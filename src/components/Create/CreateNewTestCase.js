@@ -1,7 +1,7 @@
 import { useState } from "react";
-import CreateHeader from "../components/Create/CreateHeader";
-import CreateInputs from "../components/Create/CreateInputs";
-import "./CreateNewTestCase.css";
+import CreateHeader from "./CreateHeader";
+import CreateInputs from "./CreateInputs";
+import "../../CSS/CreateNewTestCase.css";
 
 function CreateNewTestCase() {
   const [title, setTitle] = useState("");

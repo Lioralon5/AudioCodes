@@ -1,4 +1,4 @@
-import "./Sidebar.css";
+import '../../CSS/Sidebar.css';
 import Vision from "./vision.png";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";

@@ -1,23 +1,24 @@
 import { useState } from "react";
-import TestCases from "../components/TestCases/TestCases";
-import TestCasesHeader from "../components/TestCases/TestCasesHeader";
+import Header from "./Header";
+import "../../CSS/TestCases.css";
+import Table from "./Table";
 
-import "./AllTestCases.css";
-
-function AllTestCases() {
+function TestCases() {
   const [testCases, setTestCases] = useState([]);
   const [isSomeChecked, setIsSomeChecked] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
   return (
     <div className="allTestCases">
-      <TestCasesHeader
+      <Header
+        isSuite={false}
         testCases={testCases}
         setTestCases={setTestCases}
         isSomeChecked={isSomeChecked}
         isAllChecked={isAllChecked}
       />
-      <TestCases
+      <Table
+        isSuite={false}
         testCases={testCases}
         setTestCases={setTestCases}
         isSomeChecked={isSomeChecked}
@@ -29,4 +30,4 @@ function AllTestCases() {
   );
 }
 
-export default AllTestCases;
+export default TestCases;

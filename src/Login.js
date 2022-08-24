@@ -1,9 +1,9 @@
-import "./Login.css";
-import Vision from "../components/Sidebar/vision.png";
-import { auth } from "../firebase";
+import './CSS/Login.css';
+import Vision from "./components/Sidebar/vision.png";
+import { auth } from "./firebase";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../features/userSlice";
+import { login } from "./features/userSlice";
 
 function Login() {
   const [email, setEmail] = useState("");

@@ -1,0 +1,19 @@
+.test-cases-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+  .test-cases-header__left {
+    display: flex;
+    align-items: center;
+    flex: 0.9;
+  }
+  .test-cases-header__left > form {
+      margin-left: 20px;
+  }
+  
+  .test-cases-header__right {
+    display: flex;
+    align-items: center;
+  }
+  

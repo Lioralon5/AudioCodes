@@ -1,39 +1,47 @@
 import { Checkbox } from "@mui/material";
 import { useState } from "react";
 import { db } from "../../firebase";
-import "./CasesTableHead.css";
+import "../../CSS/TableHead.css";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 
-function CasesTableHead({
-  headClickHandler,
-  isAllChecked,
-  isSomeChecked,
-  setTestCases,
-}) {
+function TableHead(props) {
   const [asc, setAsc] = useState("asc");
 
   function onTitleClickHandler() {
     asc === "asc" ? setAsc("desc") : setAsc("asc");
-    db.collection("testCases")
-      .orderBy("title", asc).limit(3)
-      .onSnapshot((snapshot) =>
-        setTestCases(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
-        )
-      );
+    if (props.isSuite) {
+      db.collection("suiteCases")
+        .orderBy("title", asc)
+        .onSnapshot((snapshot) =>
+          props.setSuiteCases(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          )
+        );
+    } else {
+      db.collection("testCases")
+        .orderBy("title", asc)
+        .onSnapshot((snapshot) =>
+          props.setTestCases(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          )
+        );
+    }
   }
 
   return (
     <div className="casesTableHead">
       <div className="casesTableHead__options">
         <Checkbox
-          onClick={headClickHandler}
-          checked={isAllChecked}
-          indeterminate={isSomeChecked}
+          onClick={props.headClickHandler}
+          checked={props.isSuite ? props.isAllSuiteChecked : props.isAllChecked}
+          indeterminate={props.isSuite ? props.isSomeSuiteChecked : props.isSomeChecked}
           sx={{ "&.Mui-checked": { color: "#863654" } }}
         />
       </div>
@@ -60,4 +68,4 @@ function CasesTableHead({
   );
 }
 
-export default CasesTableHead;
+export default TableHead;

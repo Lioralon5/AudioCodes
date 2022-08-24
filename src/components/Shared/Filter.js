@@ -1,35 +1,29 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 
-function Filter({
-  isSuite,
-  setTestCases,
-  setSuiteCases,
-  setIsFilterActive,
-  setAreCasesFiltered,
-  setIsSuiteFilterActive,
-  setAreSuiteCasesFiltered,
-}) {
+function Filter(props) {
   const filterCases = (e, filter) => {
-    const cases = isSuite ? "suiteCases" : "testCases";
+    const cases = props.isSuite ? "suiteCases" : "testCases";
 
     db.collection(cases)
       .where(filter, "==", e.target.textContent)
       .onSnapshot((snapshot) => {
-        if (isSuite) {
-          setAreSuiteCasesFiltered(true);
-          setIsSuiteFilterActive(false);
-          setSuiteCases(
+        if (props.isSuite) {
+          console.log('hey')
+          props.setAreCasesFiltered(true);
+          props.setIsFilterActive(false);
+          props.setCases(
             snapshot.docs.map((doc) => ({
               id: doc.id,
               data: doc.data(),
             }))
           );
         } else {
-          setAreCasesFiltered(true);
-          setIsFilterActive(false);
-          setTestCases(
+          console.log('hey')
+          props.setAreCasesFiltered(true);
+          props.setIsFilterActive(false);
+          props.setCases(
             snapshot.docs.map((doc) => ({
               id: doc.id,
               data: doc.data(),

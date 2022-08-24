@@ -1,16 +1,16 @@
-import Sidebar from "./components/Sidebar/Sidebar";
+import Sidebar from './components/Sidebar/Sidebar';
 import { Route } from "react-router-dom";
-import AllTestCases from "./pages/AllTestCases";
-import CreateNewTestCase from "./pages/CreateNewTestCase";
-import Suite from "./pages/Suite";
-import "./App.css";
-import Login from "./pages/Login";
+import CreateNewTestCase from './components/Create/CreateNewTestCase';
+import "./CSS/App.css";
+import Login from './Login';
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, selectUser } from "./features/userSlice";
+import { login, logout, selectUser } from './features/userSlice';
 import { useEffect } from "react";
-import { auth } from "./firebase";
+import { auth } from './firebase';
+import TestCases from "./components/Tests/TestCases";
+import SuiteCases from "./components/Tests/SuiteCases";
 
-function App() {
+function AppNew() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
@@ -42,10 +42,10 @@ function App() {
           <div className="app__body">
             <Sidebar />
             <Route path="/" exact>
-              <AllTestCases />
+              <TestCases />
             </Route>
             <Route path="/suite">
-              <Suite />
+              <SuiteCases />
             </Route>
             <Route path="/create">
               <CreateNewTestCase />
@@ -57,4 +57,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppNew;

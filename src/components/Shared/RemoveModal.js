@@ -1,4 +1,4 @@
-import './RemoveModal.css'
+import '../../CSS/RemoveModal.css'
 
 function RemoveModal(props) {
 

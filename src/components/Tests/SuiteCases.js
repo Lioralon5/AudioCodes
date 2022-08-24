@@ -1,22 +1,24 @@
 import { useState } from "react";
-import SuiteCases from "../components/Suite/SuiteCases";
-import SuiteHeader from "../components/Suite/SuiteHeader";
-import "./Suite.css";
+import Header from "./Header";
+import "../../CSS/SuiteCases.css";
+import Table from './Table'
 
-function Suite() {
+function SuiteCases() {
   const [suiteCases, setSuiteCases] = useState([]);
   const [isSomeSuiteChecked, setIsSomeSuiteChecked] = useState(false);
   const [isAllSuiteChecked, setIsAllSuiteChecked] = useState(false);
 
   return (
     <div className="suite">
-      <SuiteHeader
+      <Header
+        isSuite={true}
         suiteCases={suiteCases}
         setSuiteCases={setSuiteCases}
         isSomeSuiteChecked={isSomeSuiteChecked}
         isAllSuiteChecked={isAllSuiteChecked}
       />
-      <SuiteCases
+      <Table
+        isSuite={true}
         suiteCases={suiteCases}
         setSuiteCases={setSuiteCases}
         isSomeSuiteChecked={isSomeSuiteChecked}
@@ -28,4 +30,4 @@ function Suite() {
   );
 }
 
-export default Suite;
+export default SuiteCases;
