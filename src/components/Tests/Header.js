@@ -218,7 +218,7 @@ function Header(props) {
             </IconButton>
           </Tooltip>
         )}
-        {!props.isSuite && !props.isSomeChecked && (
+        {!props.isSuite && !props.isSomeChecked && !props.isAllChecked && (
           <Tooltip title="New" placement="bottom">
             <Link to="/create">
               <IconButton>
@@ -227,7 +227,7 @@ function Header(props) {
             </Link>
           </Tooltip>
         )}
-        {!props.isSuite && props.isSomeChecked && (
+        {!props.isSuite && (props.isSomeChecked || props.isAllChecked) && (
           <Tooltip title="Add to Suite" placement="bottom">
             <IconButton onClick={addSelectedToSuite}>
               <AddOutlinedIcon sx={{ color: "#863654" }} />

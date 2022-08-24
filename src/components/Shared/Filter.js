@@ -10,9 +10,7 @@ function Filter(props) {
       .where(filter, "==", e.target.textContent)
       .onSnapshot((snapshot) => {
         if (props.isSuite) {
-          console.log('hey')
           props.setAreCasesFiltered(true);
-          props.setIsFilterActive(false);
           props.setCases(
             snapshot.docs.map((doc) => ({
               id: doc.id,
@@ -20,9 +18,7 @@ function Filter(props) {
             }))
           );
         } else {
-          console.log('hey')
           props.setAreCasesFiltered(true);
-          props.setIsFilterActive(false);
           props.setCases(
             snapshot.docs.map((doc) => ({
               id: doc.id,

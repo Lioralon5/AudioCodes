@@ -42,7 +42,8 @@ function TableHead(props) {
           onClick={props.headClickHandler}
           checked={props.isSuite ? props.isAllSuiteChecked : props.isAllChecked}
           indeterminate={props.isSuite ? props.isSomeSuiteChecked : props.isSomeChecked}
-          sx={{ "&.Mui-checked": { color: "#863654" } }}
+          sx={{ "&.Mui-checked": { color: "#863654" }, "&.Mui-indeterminate": {color: "#863654"} } }
+          
         />
       </div>
       <div onClick={onTitleClickHandler} className="casesTableHead__title">
