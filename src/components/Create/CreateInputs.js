@@ -56,6 +56,9 @@ function CreateInputs(props) {
             <InputLabel>Assignee</InputLabel>
             <Select value={props.assignee} onChange={assigneeHandler} label="Assignee">
               <MenuItem value={"Lior Alon"}>Lior Alon</MenuItem>
+              <MenuItem value={"Rocky Blaboa"}>Rocky Blaboa</MenuItem>
+              <MenuItem value={"Will Smith"}>Will Smith</MenuItem>
+              <MenuItem value={"Leonardo DiCaprio"}>Leonardo DiCaprio</MenuItem>
               <MenuItem value={"Goku"}>Goku</MenuItem>
             </Select>
           </FormControl>

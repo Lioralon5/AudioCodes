@@ -110,6 +110,15 @@ function Filter(props) {
               Lior Alon
             </MenuItem>
             <MenuItem value={1} onClick={(e) => filterCases(e, "assignee")}>
+              Rocky Blaboa
+            </MenuItem>
+            <MenuItem value={2} onClick={(e) => filterCases(e, "assignee")}>
+              Will Smith
+            </MenuItem>
+            <MenuItem value={3} onClick={(e) => filterCases(e, "assignee")}>
+              Leonardo DiCaprio
+            </MenuItem>
+            <MenuItem value={4} onClick={(e) => filterCases(e, "assignee")}>
               Goku
             </MenuItem>
           </Select>
