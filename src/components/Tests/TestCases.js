@@ -67,6 +67,7 @@ function TestCases() {
         headClickHandler={headClickHandler}
         onChecked={onChecked}
         testCases={testCases}
+        setTestCases={setTestCases}
         isSomeChecked={isSomeChecked}
         isAllChecked={isAllChecked}
       />

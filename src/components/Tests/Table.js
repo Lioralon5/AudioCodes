@@ -10,7 +10,7 @@ function Table(props) {
     <div className="testCases">
       {props.isSuite ? (
         <TableHead
-          isSuite={props.isSuite}
+          isSuite={true}
           headClickHandler={props.headClickHandler}
           isAllSuiteChecked={props.isAllSuiteChecked}
           isSomeSuiteChecked={props.isSomeSuiteChecked}
@@ -18,7 +18,7 @@ function Table(props) {
         />
       ) : (
         <TableHead
-          isSuite={props.isSuite}
+          isSuite={false}
           headClickHandler={props.headClickHandler}
           isAllChecked={props.isAllChecked}
           isSomeChecked={props.isSomeChecked}

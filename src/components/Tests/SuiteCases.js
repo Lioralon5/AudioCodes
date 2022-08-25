@@ -70,9 +70,7 @@ function SuiteCases() {
         suiteCases={suiteCases}
         setSuiteCases={setSuiteCases}
         isSomeSuiteChecked={isSomeSuiteChecked}
-        setIsSomeSuiteChecked={setIsSomeSuiteChecked}
         isAllSuiteChecked={isAllSuiteChecked}
-        setIsAllSuiteChecked={setIsAllSuiteChecked}
       />
     </div>
   );

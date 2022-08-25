@@ -8,11 +8,12 @@ import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined
 function TableHead(props) {
   const [asc, setAsc] = useState("asc");
 
-  function onTitleClickHandler() {
+  const onTitleClickHandler = (toOrder) => {
+
     asc === "asc" ? setAsc("desc") : setAsc("asc");
     if (props.isSuite) {
       db.collection("suiteCases")
-        .orderBy("title", asc)
+        .orderBy(toOrder, asc)
         .onSnapshot((snapshot) =>
           props.setSuiteCases(
             snapshot.docs.map((doc) => ({
@@ -23,7 +24,7 @@ function TableHead(props) {
         );
     } else {
       db.collection("testCases")
-        .orderBy("title", asc)
+        .orderBy(toOrder, asc)
         .onSnapshot((snapshot) =>
           props.setTestCases(
             snapshot.docs.map((doc) => ({
@@ -46,23 +47,23 @@ function TableHead(props) {
           
         />
       </div>
-      <div onClick={onTitleClickHandler} className="casesTableHead__title">
+      <div onClick={() => onTitleClickHandler('title')} className="casesTableHead__title">
         <b>Title</b>
         {asc === "asc" && <ArrowUpwardOutlinedIcon sx={{ color: "#863654" }} />}
         {asc === "desc" && (
           <ArrowDownwardOutlinedIcon sx={{ color: "#863654" }} />
         )}
       </div>
-      <div className="casesTableHead__requirement">
+      <div onClick={() => onTitleClickHandler('requirement')} className="casesTableHead__requirement">
         <b>Requirement</b>
       </div>
-      <div className="casesTableHead__assignee">
+      <div onClick={() => onTitleClickHandler('assignee')} className="casesTableHead__assignee">
         <b>Assignee</b>
       </div>
-      <div className="casesTableHead__run">
+      <div onClick={() => onTitleClickHandler('run')} className="casesTableHead__run">
         <b>Run</b>
       </div>
-      <div className="casesTableHead__status">
+      <div onClick={() => onTitleClickHandler('status')} className="casesTableHead__status">
         <b>Status</b>
       </div>
     </div>

@@ -12,16 +12,20 @@
 .casesTableHead__requirement {
     display: flex;
     flex: 0.3;
+    cursor: pointer;
 }
 .casesTableHead__assignee {
     display: flex;
     flex: 0.3;
+    cursor: pointer;
 }
 .casesTableHead__run {
     display: flex;
     flex: 0.2;
+    cursor: pointer;
 }
 .casesTableHead__status {
     display: flex;
     flex: 0.2;
+    cursor: pointer;
 }
