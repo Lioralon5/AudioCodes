@@ -52,6 +52,7 @@ function TestCases() {
       );
   }, []);
 
+
   return (
     <div className="allTestCases">
       <Header
@@ -67,9 +68,7 @@ function TestCases() {
         onChecked={onChecked}
         testCases={testCases}
         isSomeChecked={isSomeChecked}
-        setIsSomeChecked={setIsSomeChecked}
         isAllChecked={isAllChecked}
-        setIsAllChecked={setIsAllChecked}
       />
     </div>
   );
