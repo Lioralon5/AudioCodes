@@ -213,6 +213,7 @@ function Header({
             setCases={setCases}
             setIsFilterActive={setIsFilterActive}
             setAreCasesFiltered={setAreCasesFiltered}
+            user={user}
           />
         )}
         {!isFilterActive && !areCasesFiltered && (
