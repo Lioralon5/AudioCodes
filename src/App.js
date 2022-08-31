@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { auth } from './firebase';
 import TestCases from "./components/Tests/TestCases";
 import SuiteCases from "./components/Tests/SuiteCases";
+import MyCases from './components/MyCases/MyCases';
 
 function AppNew() {
   const user = useSelector(selectUser);
@@ -31,6 +32,7 @@ function AppNew() {
         dispatch(logout());
       }
     });
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -49,6 +51,9 @@ function AppNew() {
             </Route>
             <Route path="/create">
               <CreateNewTestCase />
+            </Route>
+            <Route path="/my-cases">
+              <MyCases />
             </Route>
           </div>
         )}

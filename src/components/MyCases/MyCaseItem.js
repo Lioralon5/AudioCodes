@@ -2,7 +2,7 @@ import { Checkbox } from "@mui/material";
 import { forwardRef } from "react";
 import "../../CSS/CaseItem.css";
 
-const CaseItem = forwardRef((props, ref) => {
+const MyCaseItem = forwardRef((props, ref) => {
   return (
     <div ref={ref} className="case-item">
       <div className="case-item__options">
@@ -31,4 +31,4 @@ const CaseItem = forwardRef((props, ref) => {
   );
 });
 
-export default CaseItem;
+export default MyCaseItem;

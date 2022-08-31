@@ -5,23 +5,26 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import "../../CSS/CreateInputs.css";
-
+import { db } from "../../firebase";
 
 function CreateInputs(props) {
+  const [registered, setRegistered] = useState([]);
+  useEffect(() => {
+    db.collection("registeredUsers")
+      .onSnapshot((snapshot) =>
+        setRegistered(
+          snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              data: doc.data(),
+            };
+          })
+        )
+      );
+  }, []);
 
-  const requirementHandler = (e) => {
-    props.setRequirement(e.target.value);
-  };
-  const assigneeHandler = (e) => {
-    props.setAssignee(e.target.value);
-  };
-  const runHandler = (e) => {
-    props.setRun(e.target.value);
-  };
-  const statusHandler = (e) => {
-    props.setStatus(e.target.value);
-  };
 
   return (
     <div className="inputs">
@@ -43,7 +46,7 @@ function CreateInputs(props) {
             <InputLabel>Requirement</InputLabel>
             <Select
               value={props.requirement}
-              onChange={requirementHandler}
+              onChange={(e) => props.setRequirement(e.target.value)}
               label="Requirement"
             >
               <MenuItem value={"ST functional"}>ST functional</MenuItem>
@@ -54,19 +57,50 @@ function CreateInputs(props) {
         <div className="input__assignee">
           <FormControl required style={{ minWidth: 180 }}>
             <InputLabel>Assignee</InputLabel>
-            <Select value={props.assignee} onChange={assigneeHandler} label="Assignee">
-              <MenuItem value={"Lior Alon"}>Lior Alon</MenuItem>
-              <MenuItem value={"Rocky Blaboa"}>Rocky Blaboa</MenuItem>
-              <MenuItem value={"Will Smith"}>Will Smith</MenuItem>
-              <MenuItem value={"Leonardo DiCaprio"}>Leonardo DiCaprio</MenuItem>
-              <MenuItem value={"Goku"}>Goku</MenuItem>
+            <Select
+              value={props.assignee}
+              onChange={(e) => props.setAssignee(e.target.value)}
+              label="Assignee"
+            >
+              {registered.map(({ id, data: { name } }) => (
+                <MenuItem key={id} value={name}>{name}</MenuItem>
+              ))}
+
+              {/* <MenuItem value={"Lior Alon"}>Lior Alon</MenuItem>
+              <MenuItem value={"Rocky Blaboa"}>Bocky Ralboa</MenuItem>
+              <MenuItem value={"Will Smith"}>Sill Wmith</MenuItem>
+              <MenuItem value={"Leonardo DiCaprio"}>Deonardo LiCaprio</MenuItem>
+              <MenuItem value={"Goku"}>Goku</MenuItem> */}
             </Select>
           </FormControl>
+          {/* {props.cases.map(
+          ({
+            id,
+            data: { title, requirement, assignee, run, status },
+            isChecked,
+          }) => (
+            <CaseItem
+              id={id}
+              key={id}
+              title={title}
+              requirement={requirement}
+              assignee={assignee}
+              run={run}
+              status={status}
+              isChecked={isChecked}
+              onChecked={props.onChecked}
+            />
+          )
+        )} */}
         </div>
         <div className="input__run">
           <FormControl required style={{ minWidth: 180 }}>
             <InputLabel>Run</InputLabel>
-            <Select value={props.run} onChange={runHandler} label="Run">
+            <Select
+              value={props.run}
+              onChange={(e) => props.setRun(e.target.value)}
+              label="Run"
+            >
               <MenuItem value={"No Run"}>No Run</MenuItem>
               <MenuItem value={"Passed"}>Passed</MenuItem>
               <MenuItem value={"Failed"}>Failed</MenuItem>
@@ -76,7 +110,11 @@ function CreateInputs(props) {
         <div className="input__status">
           <FormControl required style={{ minWidth: 180 }}>
             <InputLabel>Status</InputLabel>
-            <Select value={props.status} onChange={statusHandler} label="Status">
+            <Select
+              value={props.status}
+              onChange={(e) => props.setStatus(e.target.value)}
+              label="Status"
+            >
               <MenuItem value={"Open"}>Open</MenuItem>
               <MenuItem value={"Done"}>Done</MenuItem>
               <MenuItem value={"WIP"}>WIP</MenuItem>

@@ -1,0 +1,6 @@
+.table__empty {
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    font-weight: bold ;
+}

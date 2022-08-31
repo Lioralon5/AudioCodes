@@ -1,6 +1,7 @@
-.test-cases {
+.my-cases {
     display: flex;
     flex-direction: column;
     flex: 0.9;
     margin-left: 60px;
 }
+

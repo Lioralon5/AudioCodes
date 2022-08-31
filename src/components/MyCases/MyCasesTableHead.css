@@ -9,38 +9,23 @@
     flex: 0.9;
     cursor: pointer;
 }
-.table-head__title > b:hover {
-    color: #863654;
-}
 .table-head__requirement {
     display: flex;
     flex: 0.3;
     cursor: pointer;
-}
-.table-head__requirement > b:hover {
-    color: #863654;
 }
 .table-head__assignee {
     display: flex;
     flex: 0.3;
     cursor: pointer;
 }
-.table-head__assignee > b:hover {
-    color: #863654;
-}
 .table-head__run {
     display: flex;
     flex: 0.2;
     cursor: pointer;
 }
-.table-head__run > b:hover {
-    color: #863654;
-}
 .table-head__status {
     display: flex;
     flex: 0.2;
     cursor: pointer;
-}
-.table-head__status > b:hover {
-    color: #863654;
 }

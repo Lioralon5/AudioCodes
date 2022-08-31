@@ -2,7 +2,6 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    background-color: whitesmoke;
 }
 .case-item__title {
     display: flex;
@@ -24,7 +23,7 @@
 .case-item__run-green{
     display: flex;
     flex: 0.2;
-    color: rgb(25, 187, 25);
+    color: lightgreen;
 }
 .case-item__run-red{
     display: flex;

@@ -3,150 +3,101 @@ import { useState } from "react";
 import { db } from "../../firebase";
 
 function Filter(props) {
-  const filterCases = (e, filter) => {
-    const cases = props.isSuite ? "suiteCases" : "testCases";
+  const [filter, setFilter] = useState("");
 
+  const filterCases = (e, filterOption) => {
+    const cases = props.isSuite ? "suiteCases" : "testCases";
     db.collection(cases)
-      .where(filter, "==", e.target.textContent)
+      .where(filterOption, "==", e.target.textContent)
       .onSnapshot((snapshot) => {
-        if (props.isSuite) {
           props.setAreCasesFiltered(true);
           props.setCases(
             snapshot.docs.map((doc) => ({
               id: doc.id,
               data: doc.data(),
+              isChecked: false,
             }))
           );
-        } else {
-          props.setAreCasesFiltered(true);
-          props.setCases(
-            snapshot.docs.map((doc) => ({
-              id: doc.id,
-              data: doc.data(),
-            }))
-          );
-        }
       });
   };
 
-  const [filter, setFilter] = useState({
-    requirement: false,
-    assignee: false,
-    run: false,
-    status: false,
-  });
-
-  function onRequirementClick() {
-    setFilter({
-      requirement: true,
-      assignee: false,
-      run: false,
-      status: false,
-    });
-  }
-  function onAssigneeClick() {
-    setFilter({
-      requirement: false,
-      assignee: true,
-      run: false,
-      status: false,
-    });
-  }
-  function onRunClick() {
-    setFilter({
-      requirement: false,
-      assignee: false,
-      run: true,
-      status: false,
-    });
-  }
-  function onStatusClick() {
-    setFilter({
-      requirement: false,
-      assignee: false,
-      run: false,
-      status: true,
-    });
-  }
-
   return (
     <div>
-      {!filter.requirement &&
-        !filter.assignee &&
-        !filter.run &&
-        !filter.status && (
-          <FormControl style={{ minWidth: 180 }}>
-            <InputLabel>Filter by</InputLabel>
-            <Select label="Filter">
-              <MenuItem onClick={onRequirementClick}>Requirement</MenuItem>
-              <MenuItem onClick={onAssigneeClick}>Assignee</MenuItem>
-              <MenuItem onClick={onRunClick}>Run</MenuItem>
-              <MenuItem onClick={onStatusClick}>Status</MenuItem>
-            </Select>
-          </FormControl>
-        )}
-      {filter.requirement && (
+      {filter === "" && (
+        <FormControl style={{ minWidth: 180 }}>
+          <InputLabel>Filter by</InputLabel>
+          <Select label="Filter">
+            <MenuItem value={'Requirement'} onClick={() => setFilter("requirement")}>
+              Requirement
+            </MenuItem>
+            <MenuItem value={'Assignee'} onClick={() => setFilter("assignee")}>Assignee</MenuItem>
+            <MenuItem value={'Run'} onClick={() => setFilter("run")}>Run</MenuItem>
+            <MenuItem value={'Status'} onClick={() => setFilter("status")}>Status</MenuItem>
+          </Select>
+        </FormControl>
+      )}
+      {filter === "requirement" && (
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Requirement</InputLabel>
           <Select defaultOpen label="Requirement">
-            <MenuItem value={0} onClick={(e) => filterCases(e, "requirement")}>
+            <MenuItem value={'ST functional'} onClick={(e) => filterCases(e, "requirement")}>
               ST functional
             </MenuItem>
-            <MenuItem value={1} onClick={(e) => filterCases(e, "requirement")}>
+            <MenuItem value={'MI functional'} onClick={(e) => filterCases(e, "requirement")}>
               MI functional
             </MenuItem>
           </Select>
         </FormControl>
       )}
-      {filter.assignee && (
+      {filter === "assignee" && (
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Assignee</InputLabel>
           <Select defaultOpen label="Assignee">
-            <MenuItem value={0} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem value={'Lior Alon'} onClick={(e) => filterCases(e, "assignee")}>
               Lior Alon
             </MenuItem>
-            <MenuItem value={1} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem value={'Rocky Blaboa'} onClick={(e) => filterCases(e, "assignee")}>
               Rocky Blaboa
             </MenuItem>
-            <MenuItem value={2} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem value={'Will Smith'} onClick={(e) => filterCases(e, "assignee")}>
               Will Smith
             </MenuItem>
-            <MenuItem value={3} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem value={'Leonardo DiCaprio'} onClick={(e) => filterCases(e, "assignee")}>
               Leonardo DiCaprio
             </MenuItem>
-            <MenuItem value={4} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem value={'Goku'} onClick={(e) => filterCases(e, "assignee")}>
               Goku
             </MenuItem>
           </Select>
         </FormControl>
       )}
-      {filter.run && (
+      {filter === "run" && (
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Run</InputLabel>
           <Select defaultOpen label="Run">
-            <MenuItem value={0} onClick={(e) => filterCases(e, "run")}>
+            <MenuItem value={'No Run'} onClick={(e) => filterCases(e, "run")}>
               No Run
             </MenuItem>
-            <MenuItem value={1} onClick={(e) => filterCases(e, "run")}>
+            <MenuItem value={'Passed'} onClick={(e) => filterCases(e, "run")}>
               Passed
             </MenuItem>
-            <MenuItem value={2} onClick={(e) => filterCases(e, "run")}>
+            <MenuItem value={'Failed'} onClick={(e) => filterCases(e, "run")}>
               Failed
             </MenuItem>
           </Select>
         </FormControl>
       )}
-      {filter.status && (
+      {filter === "status" && (
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Status</InputLabel>
           <Select defaultOpen label="Status">
-            <MenuItem value={0} onClick={(e) => filterCases(e, "status")}>
+            <MenuItem value={'Done'} onClick={(e) => filterCases(e, "status")}>
               Done
             </MenuItem>
-            <MenuItem value={1} onClick={(e) => filterCases(e, "status")}>
+            <MenuItem value={'Open'} onClick={(e) => filterCases(e, "status")}>
               Open
             </MenuItem>
-            <MenuItem value={2} onClick={(e) => filterCases(e, "status")}>
+            <MenuItem value={'WIP'} onClick={(e) => filterCases(e, "status")}>
               WIP
             </MenuItem>
           </Select>

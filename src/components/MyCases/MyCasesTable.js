@@ -1,13 +1,13 @@
-import TableHead from "../Tests/TableHead";
-import FlipMove from "react-flip-move";
-import CaseItem from "../Tests/CaseItem";
-import '../../CSS/Table.css'
 
-function Table(props) {
+import FlipMove from "react-flip-move";
+import MyCasesTableHead from "./MyCasesTableHead";
+import MyCaseItem from "./MyCaseItem";
+
+function MyCasesTable(props) {
   return (
     <div className="table">
       {
-        <TableHead
+        <MyCasesTableHead
           isSuite={props.isSuite}
           headClickHandler={props.headClickHandler}
           isAllChecked={props.isAllChecked}
@@ -15,14 +15,14 @@ function Table(props) {
           setCases={props.setCases}
         />
       }
-      {props.cases.length === 0 ? <FlipMove><div className="table__empty">No Cases Found</div></FlipMove> : <FlipMove>
+      <FlipMove>
         {props.cases.map(
           ({
             id,
             data: { title, requirement, assignee, run, status },
             isChecked,
           }) => (
-            <CaseItem
+            <MyCaseItem
               id={id}
               key={id}
               title={title}
@@ -35,9 +35,9 @@ function Table(props) {
             />
           )
         )}
-      </FlipMove>}
+      </FlipMove>
     </div>
   );
 }
 
-export default Table;
+export default MyCasesTable;

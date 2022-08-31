@@ -15,8 +15,10 @@ function CreateHeader(props) {
       run: props.run,
       status: props.status,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      titleToLowerCase: props.title.toLowerCase(),
     });
   };
+  
 
   return (
     <div className="createHeader">
@@ -29,7 +31,7 @@ function CreateHeader(props) {
           props.assignee !== "" &&
           props.run !== "" &&
           props.status !== "" && (
-            <Tooltip title="New" placement="bottom">
+            <Tooltip title="Create" placement="bottom">
               <Link to="/">
                 <IconButton onClick={createTestCase}>
                   <AddOutlinedIcon sx={{ color: "#863654" }} />

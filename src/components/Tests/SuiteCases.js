@@ -5,6 +5,7 @@ import Table from "./Table";
 import { db } from "../../firebase";
 
 function SuiteCases() {
+  
   const [suiteCases, setSuiteCases] = useState([]);
   const [isSomeSuiteChecked, setIsSomeSuiteChecked] = useState(false);
   const [isAllSuiteChecked, setIsAllSuiteChecked] = useState(false);
@@ -55,22 +56,22 @@ function SuiteCases() {
   }, []);
 
   return (
-    <div className="suite">
+    <div className="suite-cases">
       <Header
         isSuite={true}
-        suiteCases={suiteCases}
-        setSuiteCases={setSuiteCases}
-        isSomeSuiteChecked={isSomeSuiteChecked}
-        isAllSuiteChecked={isAllSuiteChecked}
+        cases={suiteCases}
+        setCases={setSuiteCases}
+        isSomeChecked={isSomeSuiteChecked}
+        isAllChecked={isAllSuiteChecked}
       />
       <Table
         isSuite={true}
         headClickHandler={suiteHeadClickHandler}
         onChecked={onSuiteChecked}
-        suiteCases={suiteCases}
-        setSuiteCases={setSuiteCases}
-        isSomeSuiteChecked={isSomeSuiteChecked}
-        isAllSuiteChecked={isAllSuiteChecked}
+        cases={suiteCases}
+        setCases={setSuiteCases}
+        isSomeChecked={isSomeSuiteChecked}
+        isAllChecked={isAllSuiteChecked}
       />
     </div>
   );

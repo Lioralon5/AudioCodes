@@ -1,6 +1,6 @@
 import './CSS/Login.css';
 import Vision from "./components/Sidebar/vision.png";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "./features/userSlice";
@@ -27,6 +27,7 @@ function Login() {
 
   };
   
+  
   const register = () => {
     if (!name) {
       return alert("Please enter a full name!");
@@ -49,9 +50,13 @@ function Login() {
                 photoUrl: profilePic,
               })
             );
-          });
+          })
       })
       .catch((error) => alert(error));
+      db.collection("registeredUsers").add({
+        name: name,
+      })
+      console.log('hey')
   };
   return (
     <div style={{ backgroundImage: 'url("")' }} className="login">

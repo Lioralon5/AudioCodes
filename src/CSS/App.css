@@ -1,9 +1,10 @@
 .app {
-    display: flex;
-    background-color: #FFFFFF;
-    
+  display: flex;
+  background-color: #ffffff;
 }
 .app__body {
-    display: flex;
-    flex: 1;
+  display: flex;
+  flex: 1;
 }
+
+
