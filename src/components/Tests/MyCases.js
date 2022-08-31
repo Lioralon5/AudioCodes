@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 import { selectUser } from "../../features/userSlice";
 import { db } from "../../firebase";
 import { useSelector } from "react-redux";
-import "./MyCases.css";
-import MyCasesHeader from "./MyCasesHeader";
-import MyCasesTable from "./MyCasesTable";
+import "../../CSS/Cases.css";
+import Header from "./Header";
+import Table from "./Table";
+
 
 function MyCases() {
   const user = useSelector(selectUser);
   const [myCases, setMyCases] = useState([]);
-  const [isSomeChecked, setIsSomeChecked] = useState(false);
-  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [isSomeMineChecked, setIsSomeMineChecked] = useState(false);
+  const [isAllMineChecked, setIsAllMineChecked] = useState(false);
+  const [isMyFilterActive, setIsMyFilterActive] = useState(false);
+  const [areMyCasesFiltered, setAreMyCasesFiltered] = useState(false);
 
   const headClickHandler = () => {
-    setIsAllChecked(!isAllChecked);
-    setMyCases(myCases.map((t) => ({ ...t, isChecked: !isAllChecked })));
+    setIsAllMineChecked(!isAllMineChecked);
+    setMyCases(myCases.map((t) => ({ ...t, isChecked: !isAllMineChecked })));
   };
 
   const onChecked = (id) => {
@@ -31,15 +34,16 @@ function MyCases() {
   useEffect(() => {
     let checkedCasesAmount = myCases.filter((e) => e.isChecked).length;
     let casesAmount = myCases.length;
-    setIsSomeChecked(
+    setIsSomeMineChecked(
       checkedCasesAmount !== 0 && checkedCasesAmount < casesAmount
     );
-    setIsAllChecked(checkedCasesAmount === casesAmount && casesAmount !== 0);
+    setIsAllMineChecked(checkedCasesAmount === casesAmount && casesAmount !== 0);
   }, [myCases]);
 
   useEffect(() => {
     db.collection("testCases")
-      .orderBy("timestamp", "asc").where('assignee', '==', user.displayName)
+      .orderBy("timestamp", "asc")
+      .where("assignee", "==", user.displayName)
       .onSnapshot((snapshot) =>
         setMyCases(
           snapshot.docs.map((doc) => {
@@ -51,25 +55,32 @@ function MyCases() {
           })
         )
       );
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   return (
-    <div className="test-cases">
-      <MyCasesHeader
+    <div className="cases">
+      <Header
+        collection={"myCases"}
         cases={myCases}
         setCases={setMyCases}
-        isSomeChecked={isSomeChecked}
-        isAllChecked={isAllChecked}
+        isSomeChecked={isSomeMineChecked}
+        isAllChecked={isAllMineChecked}
+        isFilterActive={isMyFilterActive}
+        setIsFilterActive={setIsMyFilterActive}
+        areCasesFiltered={areMyCasesFiltered}
+        setAreCasesFiltered={setAreMyCasesFiltered}
         user={user}
       />
-      <MyCasesTable
+      <Table
+        collection={"myCases"}
         headClickHandler={headClickHandler}
         onChecked={onChecked}
         cases={myCases}
         setCases={setMyCases}
-        isSomeChecked={isSomeChecked}
-        isAllChecked={isAllChecked}
+        isSomeChecked={isSomeMineChecked}
+        isAllChecked={isAllMineChecked}
+        user={user}
       />
     </div>
   );

@@ -12,12 +12,19 @@ import Filter from "../Shared/Filter";
 import { db } from "../../firebase";
 import firebase from "firebase";
 
-function Header({ isSuite, cases, setCases, isSomeChecked, isAllChecked }) {
+function Header({
+  collection,
+  cases,
+  setCases,
+  isSomeChecked,
+  isAllChecked,
+  isFilterActive,
+  setIsFilterActive,
+  areCasesFiltered,
+  setAreCasesFiltered,
+  user,
+}) {
   const [removeModalIsOpen, setRemoveModalIsOpen] = useState(false);
-  const [isFilterActive, setIsFilterActive] = useState(false);
-  const [areCasesFiltered, setAreCasesFiltered] = useState(false);
-  const [isSuiteFilterActive, setIsSuiteFilterActive] = useState(false);
-  const [areSuiteCasesFiltered, setAreSuiteCasesFiltered] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const addSelectedToSuite = (e) => {
@@ -43,33 +50,40 @@ function Header({ isSuite, cases, setCases, isSomeChecked, isAllChecked }) {
               });
             }
           });
-          return testCase;
+        return testCase;
       });
   };
 
   const cancelFilterHandler = () => {
-    if (isSuite) {
-      setIsSuiteFilterActive(false);
-      setAreSuiteCasesFiltered(false);
-    } else {
-      setIsFilterActive(false);
-      setAreCasesFiltered(false);
-    }
-
+    setIsFilterActive(false);
+    setAreCasesFiltered(false);
     noFilter();
   };
 
   const noFilter = () => {
-    const cases = isSuite ? "suiteCases" : "testCases";
-    db.collection(cases).onSnapshot((snapshot) => {
-      setCases(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-          isChecked: false,
-        }))
-      );
-    });
+    if (collection === "myCases") {
+      db.collection("testCases")
+        .where("assignee", "==", user.displayName)
+        .onSnapshot((snapshot) => {
+          setCases(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+              isChecked: false,
+            }))
+          );
+        });
+    } else {
+      db.collection(collection).onSnapshot((snapshot) => {
+        setCases(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+            isChecked: false,
+          }))
+        );
+      });
+    }
   };
 
   const deleteHandler = () => {
@@ -78,42 +92,48 @@ function Header({ isSuite, cases, setCases, isSomeChecked, isAllChecked }) {
   };
 
   const removeSelectedTestCases = () => {
-    if (isSuite) {
-      cases
-        .filter((suiteCase) => suiteCase.isChecked)
-        .map((suiteCase) => {
-          const docRef = db
-            .collection("suiteCases")
-            .where("timestamp", "==", suiteCase.data.timestamp);
-          docRef.get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              doc.ref.delete();
+    switch (collection) {
+      case "testCases":
+        cases
+          .filter((testCase) => testCase.isChecked)
+          .map((testCase) => {
+            const docRef = db
+              .collection("testCases")
+              .where("timestamp", "==", testCase.data.timestamp);
+            docRef.get().then(function (querySnapshot) {
+              querySnapshot.forEach(function (doc) {
+                doc.ref.delete();
+              });
+              const suiteDocRef = db
+                .collection("suiteCases")
+                .where("id", "==", testCase.id);
+              suiteDocRef.get().then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                  doc.ref.delete();
+                });
+              });
             });
+            return testCase;
           });
-          return suiteCase;
-        });
-    } else {
-      cases
-        .filter((testCase) => testCase.isChecked)
-        .map((testCase) => {
-          const docRef = db
-            .collection("testCases")
-            .where("timestamp", "==", testCase.data.timestamp);
-          docRef.get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              doc.ref.delete();
-            });
-            const suiteDocRef = db
+        break;
+      case "suiteCases":
+        cases
+          .filter((suiteCase) => suiteCase.isChecked)
+          .map((suiteCase) => {
+            const docRef = db
               .collection("suiteCases")
-              .where("id", "==", testCase.id);
-            suiteDocRef.get().then(function (querySnapshot) {
+              .where("timestamp", "==", suiteCase.data.timestamp);
+            docRef.get().then(function (querySnapshot) {
               querySnapshot.forEach(function (doc) {
                 doc.ref.delete();
               });
             });
+            return suiteCase;
           });
-          return testCase;
-        });
+        break;
+      case "myCases":
+        break;
+      default:
     }
   };
   useEffect(() => {
@@ -121,10 +141,11 @@ function Header({ isSuite, cases, setCases, isSomeChecked, isAllChecked }) {
       noFilter();
     } else {
       const input = searchTerm.toLowerCase();
-      const cases = isSuite ? "suiteCases" : "testCases";
-        db.collection(cases)
+      if (collection === "myCases") {
+        db.collection("testCases")
+          .where("assignee", "==", user.displayName)
           .where("titleToLowerCase", ">=", input)
-          .where("titleToLowerCase", "<", input + '\uf8ff')
+          .where("titleToLowerCase", "<", input + "\uf8ff")
           .onSnapshot((snapshot) => {
             setCases(
               snapshot.docs.map((doc) => ({
@@ -133,7 +154,21 @@ function Header({ isSuite, cases, setCases, isSomeChecked, isAllChecked }) {
                 isChecked: false,
               }))
             );
-          });      
+          });
+      } else {
+        db.collection(collection)
+          .where("titleToLowerCase", ">=", input)
+          .where("titleToLowerCase", "<", input + "\uf8ff")
+          .onSnapshot((snapshot) => {
+            setCases(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                data: doc.data(),
+                isChecked: false,
+              }))
+            );
+          });
+      }
     }
     // eslint-disable-next-line
   }, [searchTerm]);
@@ -141,7 +176,13 @@ function Header({ isSuite, cases, setCases, isSomeChecked, isAllChecked }) {
   return (
     <div className="header">
       <div className="header__left">
-        <h3>{isSuite ? "Suite" : "Test Cases"}</h3>
+        <h3>
+          {collection === "suiteCases"
+            ? "Suite"
+            : collection === "testCases"
+            ? "Test Cases"
+            : "My Cases"}
+        </h3>
         <form>
           <TextField
             id="search-bar"
@@ -158,41 +199,33 @@ function Header({ isSuite, cases, setCases, isSomeChecked, isAllChecked }) {
       </div>
 
       <div className="header__right">
-        {((isSuite && (isSuiteFilterActive || areSuiteCasesFiltered)) ||
-          (!isSuite && (isFilterActive || areCasesFiltered))) && (
+        {(isFilterActive || areCasesFiltered) && (
           <Tooltip title="Cancel" placement="bottom">
             <IconButton onClick={cancelFilterHandler}>
               <FilterListOffOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
           </Tooltip>
         )}
-        {((isSuite && isSuiteFilterActive) || (!isSuite && isFilterActive)) && (
+        {isFilterActive && (
           <Filter
-            isSuite={isSuite}
+            collection={collection}
             setCases={setCases}
-            setIsFilterActive={
-              isSuite ? setIsSuiteFilterActive : setIsFilterActive
-            }
-            setAreCasesFiltered={
-              isSuite ? setAreSuiteCasesFiltered : setAreCasesFiltered
-            }
+            setIsFilterActive={setIsFilterActive}
+            setAreCasesFiltered={setAreCasesFiltered}
           />
         )}
-        {((isSuite && !isSuiteFilterActive && !areSuiteCasesFiltered) ||
-          (!isSuite && !isFilterActive && !areCasesFiltered)) && (
+        {!isFilterActive && !areCasesFiltered && (
           <Tooltip title="Filter" placement="bottom">
             <IconButton
               onClick={() => {
-                isSuite
-                  ? setIsSuiteFilterActive(true)
-                  : setIsFilterActive(true);
+                setIsFilterActive(true);
               }}
             >
               <FilterListOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
           </Tooltip>
         )}
-        {!isSuite && !isSomeChecked && !isAllChecked && (
+        {collection === "testCases" && !isSomeChecked && !isAllChecked && (
           <Tooltip title="New" placement="bottom">
             <Link to="/create">
               <IconButton>
@@ -201,15 +234,15 @@ function Header({ isSuite, cases, setCases, isSomeChecked, isAllChecked }) {
             </Link>
           </Tooltip>
         )}
-        {!isSuite && (isSomeChecked || isAllChecked) && (
+        {collection === "testCases" && (isSomeChecked || isAllChecked) && (
           <Tooltip title="Add to Suite" placement="bottom">
             <IconButton onClick={addSelectedToSuite}>
               <AddOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
           </Tooltip>
         )}
-        {((isSuite && (isSomeChecked || isAllChecked)) ||
-          (!isSuite && (isSomeChecked || isAllChecked))) && (
+        {((collection === "suiteCases" && (isSomeChecked || isAllChecked)) ||
+          (collection === "testCases" && (isSomeChecked || isAllChecked))) && (
           <Tooltip title="Remove" placement="bottom">
             <IconButton onClick={() => setRemoveModalIsOpen(true)}>
               <ClearOutlinedIcon sx={{ color: "#863654" }} />

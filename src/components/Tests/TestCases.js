@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
-import "../../CSS/TestCases.css";
+import "../../CSS/Cases.css";
 import Table from "./Table";
 import { db } from "../../firebase";
 
@@ -9,6 +9,8 @@ function TestCases() {
   const [testCases, setTestCases] = useState([]);
   const [isSomeChecked, setIsSomeChecked] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
+  const [isFilterActive, setIsFilterActive] = useState(false);
+  const [areCasesFiltered, setAreCasesFiltered] = useState(false);
 
   const headClickHandler = () => {
     setIsAllChecked(!isAllChecked);
@@ -55,16 +57,20 @@ function TestCases() {
 
 
   return (
-    <div className="test-cases">
+    <div className="cases">
       <Header
-        isSuite={false}
+        collection={'testCases'}
         cases={testCases}
         setCases={setTestCases}
         isSomeChecked={isSomeChecked}
         isAllChecked={isAllChecked}
+        isFilterActive={isFilterActive}
+        setIsFilterActive={setIsFilterActive}
+        areCasesFiltered={areCasesFiltered}
+        setAreCasesFiltered={setAreCasesFiltered}
       />
       <Table
-        isSuite={false}
+        collection={'testCases'}
         headClickHandler={headClickHandler}
         onChecked={onChecked}
         cases={testCases}

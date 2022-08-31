@@ -6,10 +6,11 @@ function Filter(props) {
   const [filter, setFilter] = useState("");
 
   const filterCases = (e, filterOption) => {
-    const cases = props.isSuite ? "suiteCases" : "testCases";
-    db.collection(cases)
-      .where(filterOption, "==", e.target.textContent)
-      .onSnapshot((snapshot) => {
+    if (props.collection === "myCases") {
+      db.collection('testCases')
+        .where("assignee", "==", props.user.displayName)
+        .where(filterOption, "==", e.target.textContent)
+        .onSnapshot((snapshot) => {
           props.setAreCasesFiltered(true);
           props.setCases(
             snapshot.docs.map((doc) => ({
@@ -18,7 +19,21 @@ function Filter(props) {
               isChecked: false,
             }))
           );
-      });
+        });
+    } else {
+      db.collection(props.collection)
+        .where(filterOption, "==", e.target.textContent)
+        .onSnapshot((snapshot) => {
+          props.setAreCasesFiltered(true);
+          props.setCases(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+              isChecked: false,
+            }))
+          );
+        });
+    }
   };
 
   return (
@@ -27,12 +42,21 @@ function Filter(props) {
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Filter by</InputLabel>
           <Select label="Filter">
-            <MenuItem value={'Requirement'} onClick={() => setFilter("requirement")}>
+            <MenuItem
+              value={"Requirement"}
+              onClick={() => setFilter("requirement")}
+            >
               Requirement
             </MenuItem>
-            <MenuItem value={'Assignee'} onClick={() => setFilter("assignee")}>Assignee</MenuItem>
-            <MenuItem value={'Run'} onClick={() => setFilter("run")}>Run</MenuItem>
-            <MenuItem value={'Status'} onClick={() => setFilter("status")}>Status</MenuItem>
+            <MenuItem value={"Assignee"} onClick={() => setFilter("assignee")}>
+              Assignee
+            </MenuItem>
+            <MenuItem value={"Run"} onClick={() => setFilter("run")}>
+              Run
+            </MenuItem>
+            <MenuItem value={"Status"} onClick={() => setFilter("status")}>
+              Status
+            </MenuItem>
           </Select>
         </FormControl>
       )}
@@ -40,10 +64,16 @@ function Filter(props) {
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Requirement</InputLabel>
           <Select defaultOpen label="Requirement">
-            <MenuItem value={'ST functional'} onClick={(e) => filterCases(e, "requirement")}>
+            <MenuItem
+              value={"ST functional"}
+              onClick={(e) => filterCases(e, "requirement")}
+            >
               ST functional
             </MenuItem>
-            <MenuItem value={'MI functional'} onClick={(e) => filterCases(e, "requirement")}>
+            <MenuItem
+              value={"MI functional"}
+              onClick={(e) => filterCases(e, "requirement")}
+            >
               MI functional
             </MenuItem>
           </Select>
@@ -53,19 +83,34 @@ function Filter(props) {
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Assignee</InputLabel>
           <Select defaultOpen label="Assignee">
-            <MenuItem value={'Lior Alon'} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem
+              value={"Lior Alon"}
+              onClick={(e) => filterCases(e, "assignee")}
+            >
               Lior Alon
             </MenuItem>
-            <MenuItem value={'Rocky Blaboa'} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem
+              value={"Rocky Blaboa"}
+              onClick={(e) => filterCases(e, "assignee")}
+            >
               Rocky Blaboa
             </MenuItem>
-            <MenuItem value={'Will Smith'} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem
+              value={"Will Smith"}
+              onClick={(e) => filterCases(e, "assignee")}
+            >
               Will Smith
             </MenuItem>
-            <MenuItem value={'Leonardo DiCaprio'} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem
+              value={"Leonardo DiCaprio"}
+              onClick={(e) => filterCases(e, "assignee")}
+            >
               Leonardo DiCaprio
             </MenuItem>
-            <MenuItem value={'Goku'} onClick={(e) => filterCases(e, "assignee")}>
+            <MenuItem
+              value={"Goku"}
+              onClick={(e) => filterCases(e, "assignee")}
+            >
               Goku
             </MenuItem>
           </Select>
@@ -75,13 +120,13 @@ function Filter(props) {
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Run</InputLabel>
           <Select defaultOpen label="Run">
-            <MenuItem value={'No Run'} onClick={(e) => filterCases(e, "run")}>
+            <MenuItem value={"No Run"} onClick={(e) => filterCases(e, "run")}>
               No Run
             </MenuItem>
-            <MenuItem value={'Passed'} onClick={(e) => filterCases(e, "run")}>
+            <MenuItem value={"Passed"} onClick={(e) => filterCases(e, "run")}>
               Passed
             </MenuItem>
-            <MenuItem value={'Failed'} onClick={(e) => filterCases(e, "run")}>
+            <MenuItem value={"Failed"} onClick={(e) => filterCases(e, "run")}>
               Failed
             </MenuItem>
           </Select>
@@ -91,13 +136,13 @@ function Filter(props) {
         <FormControl style={{ minWidth: 180 }}>
           <InputLabel>Status</InputLabel>
           <Select defaultOpen label="Status">
-            <MenuItem value={'Done'} onClick={(e) => filterCases(e, "status")}>
+            <MenuItem value={"Done"} onClick={(e) => filterCases(e, "status")}>
               Done
             </MenuItem>
-            <MenuItem value={'Open'} onClick={(e) => filterCases(e, "status")}>
+            <MenuItem value={"Open"} onClick={(e) => filterCases(e, "status")}>
               Open
             </MenuItem>
-            <MenuItem value={'WIP'} onClick={(e) => filterCases(e, "status")}>
+            <MenuItem value={"WIP"} onClick={(e) => filterCases(e, "status")}>
               WIP
             </MenuItem>
           </Select>

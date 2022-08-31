@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { auth } from './firebase';
 import TestCases from "./components/Tests/TestCases";
 import SuiteCases from "./components/Tests/SuiteCases";
-import MyCases from './components/MyCases/MyCases';
+import MyCases from './components/Tests/MyCases'
 
 function AppNew() {
   const user = useSelector(selectUser);

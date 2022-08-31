@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
-import "../../CSS/SuiteCases.css";
+import "../../CSS/Cases.css";
 import Table from "./Table";
 import { db } from "../../firebase";
 
@@ -9,6 +9,8 @@ function SuiteCases() {
   const [suiteCases, setSuiteCases] = useState([]);
   const [isSomeSuiteChecked, setIsSomeSuiteChecked] = useState(false);
   const [isAllSuiteChecked, setIsAllSuiteChecked] = useState(false);
+  const [isSuiteFilterActive, setIsSuiteFilterActive] = useState(false);
+  const [areSuiteCasesFiltered, setAreSuiteCasesFiltered] = useState(false);
 
   const suiteHeadClickHandler = () => {
     setIsAllSuiteChecked(!isAllSuiteChecked);
@@ -56,16 +58,20 @@ function SuiteCases() {
   }, []);
 
   return (
-    <div className="suite-cases">
+    <div className="cases">
       <Header
-        isSuite={true}
+        collection={'suiteCases'}
         cases={suiteCases}
         setCases={setSuiteCases}
         isSomeChecked={isSomeSuiteChecked}
         isAllChecked={isAllSuiteChecked}
+        isFilterActive={isSuiteFilterActive}
+        setIsFilterActive={setIsSuiteFilterActive}
+        areCasesFiltered={areSuiteCasesFiltered}
+        setAreCasesFiltered={setAreSuiteCasesFiltered}
       />
       <Table
-        isSuite={true}
+        collection={'suiteCases'}
         headClickHandler={suiteHeadClickHandler}
         onChecked={onSuiteChecked}
         cases={suiteCases}
