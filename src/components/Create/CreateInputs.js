@@ -65,33 +65,8 @@ function CreateInputs(props) {
               {registered.map(({ id, data: { name } }) => (
                 <MenuItem key={id} value={name}>{name}</MenuItem>
               ))}
-
-              {/* <MenuItem value={"Lior Alon"}>Lior Alon</MenuItem>
-              <MenuItem value={"Rocky Blaboa"}>Bocky Ralboa</MenuItem>
-              <MenuItem value={"Will Smith"}>Sill Wmith</MenuItem>
-              <MenuItem value={"Leonardo DiCaprio"}>Deonardo LiCaprio</MenuItem>
-              <MenuItem value={"Goku"}>Goku</MenuItem> */}
             </Select>
           </FormControl>
-          {/* {props.cases.map(
-          ({
-            id,
-            data: { title, requirement, assignee, run, status },
-            isChecked,
-          }) => (
-            <CaseItem
-              id={id}
-              key={id}
-              title={title}
-              requirement={requirement}
-              assignee={assignee}
-              run={run}
-              status={status}
-              isChecked={isChecked}
-              onChecked={props.onChecked}
-            />
-          )
-        )} */}
         </div>
         <div className="input__run">
           <FormControl required style={{ minWidth: 180 }}>

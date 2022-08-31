@@ -225,7 +225,7 @@ function Header({
             </IconButton>
           </Tooltip>
         )}
-        {collection === "testCases" && !isSomeChecked && !isAllChecked && (
+        {!isSomeChecked && !isAllChecked && (
           <Tooltip title="New" placement="bottom">
             <Link to="/create">
               <IconButton>
@@ -234,15 +234,14 @@ function Header({
             </Link>
           </Tooltip>
         )}
-        {collection === "testCases" && (isSomeChecked || isAllChecked) && (
+        {(isSomeChecked || isAllChecked) && (
           <Tooltip title="Add to Suite" placement="bottom">
             <IconButton onClick={addSelectedToSuite}>
               <AddOutlinedIcon sx={{ color: "#863654" }} />
             </IconButton>
           </Tooltip>
         )}
-        {((collection === "suiteCases" && (isSomeChecked || isAllChecked)) ||
-          (collection === "testCases" && (isSomeChecked || isAllChecked))) && (
+        {(isSomeChecked || isAllChecked) && (
           <Tooltip title="Remove" placement="bottom">
             <IconButton onClick={() => setRemoveModalIsOpen(true)}>
               <ClearOutlinedIcon sx={{ color: "#863654" }} />

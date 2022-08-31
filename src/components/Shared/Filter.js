@@ -93,7 +93,7 @@ function Filter(props) {
               value={"Rocky Blaboa"}
               onClick={(e) => filterCases(e, "assignee")}
             >
-              Rocky Blaboa
+              Rocky Balboa
             </MenuItem>
             <MenuItem
               value={"Will Smith"}

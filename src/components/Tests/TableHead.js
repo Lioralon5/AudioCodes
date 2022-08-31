@@ -43,16 +43,8 @@ function TableHead(props) {
       <div className="table-head__options">
         <Checkbox
           onClick={props.headClickHandler}
-          checked={
-            props.collection === "suiteCases"
-              ? props.isAllSuiteChecked
-              : props.isAllChecked
-          }
-          indeterminate={
-            props.collection === "suiteCases"
-              ? props.isSomeSuiteChecked
-              : props.isSomeChecked
-          }
+          checked={props.isAllChecked}
+          indeterminate={props.isSomeChecked}
           sx={{
             "&.Mui-checked": { color: "#863654" },
             "&.MuiCheckbox-indeterminate": { color: "#863654" },
