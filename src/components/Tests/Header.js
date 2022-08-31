@@ -3,14 +3,14 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import FilterListOffOutlinedIcon from "@mui/icons-material/FilterListOffOutlined";
-import { IconButton, TextField, Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import RemoveModal from "../Shared/RemoveModal";
 import BackDrop from "../Shared/BackDrop";
 import Filter from "../Shared/Filter";
 import { db } from "../../firebase";
 import firebase from "firebase";
+import HeaderOption from "./HeaderOption";
 
 function Header({
   collection,
@@ -200,11 +200,12 @@ function Header({
 
       <div className="header__right">
         {(isFilterActive || areCasesFiltered) && (
-          <Tooltip title="Cancel" placement="bottom">
-            <IconButton onClick={cancelFilterHandler}>
-              <FilterListOffOutlinedIcon sx={{ color: "#863654" }} />
-            </IconButton>
-          </Tooltip>
+          <HeaderOption
+            title="Cancel"
+            onClick={cancelFilterHandler}
+            link={null}
+            icon={FilterListOffOutlinedIcon}
+          />
         )}
         {isFilterActive && (
           <Filter
@@ -215,38 +216,33 @@ function Header({
           />
         )}
         {!isFilterActive && !areCasesFiltered && (
-          <Tooltip title="Filter" placement="bottom">
-            <IconButton
-              onClick={() => {
-                setIsFilterActive(true);
-              }}
-            >
-              <FilterListOutlinedIcon sx={{ color: "#863654" }} />
-            </IconButton>
-          </Tooltip>
+          <HeaderOption
+            title="Filter"
+            onClick={() => {
+              setIsFilterActive(true);
+            }}
+            link={null}
+            icon={FilterListOutlinedIcon}
+          />
         )}
-        {!isSomeChecked && !isAllChecked && (
-          <Tooltip title="New" placement="bottom">
-            <Link to="/create">
-              <IconButton>
-                <AddOutlinedIcon sx={{ color: "#863654" }} />
-              </IconButton>
-            </Link>
-          </Tooltip>
+        {collection === "testCases" && !isSomeChecked && !isAllChecked && (
+          <HeaderOption title="New" link="/create" icon={AddOutlinedIcon} />
         )}
-        {(isSomeChecked || isAllChecked) && (
-          <Tooltip title="Add to Suite" placement="bottom">
-            <IconButton onClick={addSelectedToSuite}>
-              <AddOutlinedIcon sx={{ color: "#863654" }} />
-            </IconButton>
-          </Tooltip>
+        {collection === "testCases" && (isSomeChecked || isAllChecked) && (
+          <HeaderOption
+            title="Add to Suite"
+            onClick={addSelectedToSuite}
+            link={null}
+            icon={AddOutlinedIcon}
+          />
         )}
         {(isSomeChecked || isAllChecked) && (
-          <Tooltip title="Remove" placement="bottom">
-            <IconButton onClick={() => setRemoveModalIsOpen(true)}>
-              <ClearOutlinedIcon sx={{ color: "#863654" }} />
-            </IconButton>
-          </Tooltip>
+          <HeaderOption
+            title="Remove"
+            onClick={() => setRemoveModalIsOpen(true)}
+            link={null}
+            icon={ClearOutlinedIcon}
+          />
         )}
       </div>
       {removeModalIsOpen && (
